@@ -17,7 +17,8 @@
     "node-mysql": "^0.4.2",
     "redis": "^0.12.1",
     "should": "^7.0.3",
-    "sinon": "^1.16.0"
+    "sinon": "^1.16.0",
+    "thenjs": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {

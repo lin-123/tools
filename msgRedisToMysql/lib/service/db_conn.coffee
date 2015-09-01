@@ -6,7 +6,5 @@ conn = mysql.createConnection
   password: 'root',
   database:'message',
   port: 3306
-
 conn.connect()
-
 module.exports = conn
