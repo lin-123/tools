@@ -4,7 +4,6 @@ thenjs = require 'thenjs'
 
 describe '验证测试', ->
   describe 'io与异步调用', ->
-
     it '测试多线程 ', (done)->
       require('../server') 'list1', (err, result)->
         console.log "list1 callback"
@@ -110,8 +109,12 @@ describe '验证测试', ->
 
   describe 'thenjs', ->
     obj = {}
+    it 'Normal, cont ', (done)->
+      obj.asyncMethod = (message, callback)->
+        setTimeout ->
+          callback null, message
+        ,100
 
-    afterEach (done)->
       thenjs.parallel [(cont)->
         obj.asyncMethod 'first', cont # 相当于 cont err, result
       ,(cont)->
@@ -124,17 +127,43 @@ describe '验证测试', ->
         console.log err, 'paraller callback err' 
         done()
 
-    it 'Normal, cont ', ->
-      obj.asyncMethod = (message, callback)->
-        setTimeout ->
-          callback null, message
-        ,100
 
-    it 'Error, cont 的使用', ->
+    it 'Error, cont 的使用', (done)->
       obj.asyncMethod = (message, callback)->
         setTimeout ->
           callback "#{message} err occuer...", null
         ,100
+
+      thenjs.parallel [(cont)->
+        obj.asyncMethod 'first', cont # 相当于 cont err, result
+      ,(cont)->
+        obj.asyncMethod 'second', cont
+      ]
+      .then (cont, result)-> 
+        console.log result, 'paraller result'
+        done()
+      .fail (cont, err)-> 
+        console.log err, 'paraller callback err' 
+        done()
+
+    it '测试thenjs.fail 捕获错误消息后 thenjs 的each 调用是否持续进行', (done)->
+      # 测试结果： 一旦发生错误，会直接跳到错误处理部分， 整个操作回滚
+      arr = [1,2,3,4,5]
+
+      thenjs.each arr, (cont, item)->
+        if item in [3, 5]
+          cont "err:#{item}", null
+          return
+        item += 10
+        cont null, item
+      # .then (cont, result)->
+      #   console.log result, "Normal result"
+      # .fail (cont, err)->
+      #   console.log err, "err handler"
+      .fin (cont, err, result)->
+        console.log "finally result", err, result, arguments
+        console.log "arr is: ", arr
+        done()
 
   describe 'console.log', ->
     it ',,,', ->

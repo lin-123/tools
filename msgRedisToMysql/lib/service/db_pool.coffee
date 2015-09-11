@@ -1,12 +1,15 @@
 mysql = require 'mysql'
+mysqlConfig = require '../../config/mysql_config'
 
-pool = mysql.createPool
+env = process.env.NODE_ENV | "developments"
+
+pool = mysql.createPool  #mysqlConfig[env]
   host: 'localhost',
   user: 'root',
   password: 'root',
   database:'message',
   port: 3306
-  acquireTimeout: 1000 #超时时间
+  acquireTimeout: 1000
   connectionLimit: 50
   queueLimit: 10
 

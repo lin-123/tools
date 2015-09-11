@@ -14,4 +14,4 @@ redis2SqlTest:
 		$(MOCHA_OPTS) \
 		msgRedisToMysql/test/*.test.coffee | tee test.result.log
 
-.PHONY: test, redis2SqlTest
+.PHONY: test redis2SqlTest

@@ -7,6 +7,22 @@ mysqlService = require '../lib/mysqlService'
 client = require('redis').createClient()
 
 describe 'mysqlService', ->
+  describe '#insertDataByLoop', (done)->
+    it.only '测试当插入数据出错时， 是否会有事件回滚', (done)->
+      # 不会事件回滚， 需返回messageid
+      client.lrange 'messages', 0, -1, (err, data)->
+        messages = data.splice(0, 10)
+        message = JSON.stringify
+          id: 'wrong date'
+          content: "kakaka"
+          time: 'new Date()-1000'
+        messages[6] = message
+
+        mysqlService.insertDataByLoop messages.reverse(), (err)->
+          err.should.eql 'wrong date'
+          done()
+    
+
   describe 'insertData', ->
     messages = []
     start = null
@@ -46,6 +62,29 @@ describe 'mysqlService', ->
       .fail (cont, err)->
         console.log err
         done()
+
+  describe '#save to redis', ->
+    it ",,,", (done)->
+      message = 
+        id: 0
+        content: "kakaka"
+        time: new Date()-1000
+
+      messages = []
+      for i in [0...10]
+        message.id = i
+        message.time++
+        messages.push JSON.stringify(message)
+      
+      thenjs.each messages, (cont, message)->
+        client.lpush 'messages', message, cont
+      .then (cont, results)-> 
+        console.log results[0], '====redis=====1'
+        done()
+      .fail (cont, err)->
+        console.log err, '-----'
+        done()
+
 
   describe 'mysqlTest', ->
     pool = require '../lib/service/db_pool'

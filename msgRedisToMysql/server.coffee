@@ -12,7 +12,9 @@ message =
 
 option = 
   cmd:'save'
-  args: 'list1'
+  key: 'list1'
+  start: 0
+  stop: -1
 
 module.exports = (key, callback)->
   option.args = key

@@ -8,6 +8,7 @@ constants =
     voice: 2
     fromCsr: 4
     text: 8
+require 'mochatest'
 
 checkMessageByVersion = (message, version)->
   content = message.content
