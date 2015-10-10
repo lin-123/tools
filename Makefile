@@ -1,4 +1,4 @@
-TIMEOUT = 50000
+TIMEOUT = 10000
 SLOW = 500
 MOCHA_OPTS = --compilers coffee:coffee-script/register --timeout $(TIMEOUT) --slow $(SLOW)
 

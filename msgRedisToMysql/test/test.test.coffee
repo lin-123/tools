@@ -207,13 +207,18 @@ describe '验证测试', ->
       logDir = require('path').join __dirname, "../log"
       logDir.should.eql '/vagrant/01myfolder/mochatest/msgRedisToMysql/log'
 
-  describe 'fs', ->
-    it '#appendFile', (done)->
+  describe '#fs', ->
+    it 'appendFile', (done)->
       fs = require 'fs'
       message = JSON.stringify
         err: 'internal error'
       fs.appendFile './log', message+"\n", 'utf8'
 
       fs.readFile './log', 'utf8',()->
+        console.log arguments 
+        done()
+    it '#deleteFile by child process', (done)->
+      require('child_process').exec 'rm *.test.js', {cwd:__dirname, shell:'/bin/zsh'}, ()->
+        # 可以执行
         console.log arguments 
         done()

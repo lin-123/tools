@@ -8,7 +8,7 @@ client = require('redis').createClient()
 
 describe 'mysqlService', ->
   describe '#insertDataByLoop', (done)->
-    it.only '测试当插入数据出错时， 是否会有事件回滚', (done)->
+    it '测试当插入数据出错时， 是否会有事件回滚', (done)->
       # 不会事件回滚， 需返回messageid
       client.lrange 'messages', 0, -1, (err, data)->
         messages = data.splice(0, 10)
