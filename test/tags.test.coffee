@@ -2,12 +2,8 @@ expect = require('chai').expect
 tags = require("../lib/tags.js")
 fs = require 'fs'
 
-describe "Tags" , ()-> #描述测试的那个模块
-  before ()->
-    console.log "=====before========="
-
+describe "Tags" , -> #描述测试的那个模块
   beforeEach (done)->
-    console.log "======beforeEach======"
     setTimeout(()->
       console.log 'setTimeout...'
       done()
@@ -30,5 +26,3 @@ describe "Tags" , ()-> #描述测试的那个模块
     it 'should return Hi',()->
       results = tags.sayHi()
       expect(results).to.equal('Hi...')
-  after ()->
-    console.log "=========after========"

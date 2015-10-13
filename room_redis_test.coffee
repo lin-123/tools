@@ -16,7 +16,6 @@ restart = (client)->
     client = room_redis
   ,2000
 
-console.log 'test test test ....'
 client = redis.createClient(strings.redis_conf.port,strings.redis_conf.host, strings.redis_conf.options)
 
 client.on 'error', (err)->

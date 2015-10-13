@@ -4,7 +4,7 @@ demo = require '../lib/demo'
 
 client = require('redis').createClient()
 
-describe 'test', ->
+describe 'demo', ->
   describe '#sinon', ->
     describe '#spy', ->
       it 'demo1', (done)->

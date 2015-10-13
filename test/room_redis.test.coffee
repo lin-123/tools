@@ -10,7 +10,7 @@ client = redis.createClient()
 client.on 'error', (err)->
   console.log err
 
-describe.only 'room_redis', ->
+describe 'room_redis', ->
   channel = 'aaa' #strings.room_message_channels_prefix + '#hi'
   room_redis ->
     i= 0
