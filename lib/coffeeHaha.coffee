@@ -35,9 +35,12 @@ classes = ->
   sam = new Snake "Sammy the Python"
   tom = new Horse "Tommy the Palomino"
 
+  console.log sam, sam.move
   sam.move()
   tom.move(44)
   tom.song()
+
+classes()
 
 
 

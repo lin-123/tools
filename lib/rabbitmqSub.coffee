@@ -20,7 +20,7 @@ client.on "ready", ->
     queue.bind exchangeName, routingKey
     
     queue.subscribe (message)->
-      console.log 'rabbitmq recive message:', message
+      console.log 'rabbitmq recive message:', message.data.toString()
 
 client.on "error", (err)->
   console.log "Error: connect to rabbitmq failed #{err}"

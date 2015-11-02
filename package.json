@@ -19,6 +19,7 @@
     "redis": "^0.12.1",
     "should": "^7.0.3",
     "sinon": "^1.16.0",
+    "supertest": "^1.1.0",
     "thenjs": "^2.0.0"
   },
   "devDependencies": {},
