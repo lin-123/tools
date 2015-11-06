@@ -3,7 +3,16 @@ _ = require 'lodash'
 test = require '../lib/test'
 
 describe '验证测试', ->
-  describe.only 'bind', ->
+  describe.only 'should', ->
+    it 'Normal, null, undefined should be tested', ->
+      should.not.exist(null)
+      should.not.exist(undefined)
+      should.exist('array')
+    # it 'Error, string should exist', ->
+    #   should.not.exist('array')
+
+
+  describe 'bind', ->
     it 'x should eql 0', ->
       console.log test.bindModule.getx()
       test.bindModule.getx().should.eql 0
@@ -45,7 +54,7 @@ describe '验证测试', ->
     # 1.目录下包含 package.json 文件， 则通过package.json 加载
     # 2.否则， 查找 index.js 文件， 通过index.js 夹杂
     # 3.目录下没有package.json 也没有 index.js 则加载失败。 （Error: Cannot find module '../exportsFolder'）
-    
+
     it "require('../lib/exportsFolder1') have package.json", ->
       folder = require('../lib/exportsFolder1')
       folder.should.be.Object()
@@ -55,16 +64,16 @@ describe '验证测试', ->
       folder = require('../lib/exportsFolder2')
       folder.should.be.Object()
       folder.hello.should.be.Function()
-  
+
   describe 'lodash', ->
     it '_.filter', ->
       users = [
         { 'user': 'barney', 'age': 36 },
         { 'user': 'fred',   'age': 40 }
       ]
-        
+
       console.log users
 
-      # _.forEach 
+      # _.forEach
 
       console.log _.filter(users, 'age__gt36')
