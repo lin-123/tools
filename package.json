@@ -24,6 +24,9 @@
   },
   "devDependencies": {},
   "scripts": {
+    "blanket":{
+      "pattern": "eventproxy/lib"
+    },
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -21,7 +21,30 @@ describe 'mysqlService', ->
         mysqlService.insertDataByLoop messages.reverse(), (err)->
           err.should.eql 'wrong date'
           done()
-    
+
+    it.only '向 mysql 插入 images', ->
+      image =
+        name: "9.pic.jpg",
+        description: "好噶好噶",
+        url: "http://mobileService.qiniudn.com/9.pic.jpg",
+        viewUrl: "http://mobileService.qiniudn.com/9.pic.jpg?imageView2/0/w/250",
+        type: 1,
+        width: 250,
+        height: 99,
+        department: 1,
+        id: 1,
+        updatedAt: 10000
+
+      images=[]
+
+      for i in [0..10]
+        (image.id++) && (image.updatedAt++) &&(image.department%4 ++)
+        images.push JSON.stringify image
+
+      mysqlService.insertDataByLoop images, (err)->
+          err.should.eql 'wrong date'
+          done()
+
 
   describe 'insertData', ->
     messages = []
@@ -31,7 +54,7 @@ describe 'mysqlService', ->
         messages = data
         console.log new Date(), messages.length
         done()
-    
+
     afterEach ->
       console.log new Date()
       console.log '==================='
@@ -43,7 +66,7 @@ describe 'mysqlService', ->
         done()
 
     it 'normal, 递归循环向db 插入', (done)->
-      #3640ms nodejs 是单线程， 使用递归, 每个分支重点会创建一个 connection， 由connection向数据库写数据， 
+      #3640ms nodejs 是单线程， 使用递归, 每个分支重点会创建一个 connection， 由connection向数据库写数据，
       #由于是多条分支一起写数据，故相对较快。
       mysqlService.insertDataByRecursive messages,(err)->
         should.not.exist(err)
@@ -56,7 +79,7 @@ describe 'mysqlService', ->
       messages
       thenjs.each messages, (cont, message)->
         client.lpush 'list2', message, cont
-      .then (cont, results)-> 
+      .then (cont, results)->
         console.log results[0], '====redis=====1'
         done()
       .fail (cont, err)->
@@ -65,7 +88,7 @@ describe 'mysqlService', ->
 
   describe '#save to redis', ->
     it ",,,", (done)->
-      message = 
+      message =
         id: 0
         content: "kakaka"
         time: new Date()-1000
@@ -75,10 +98,10 @@ describe 'mysqlService', ->
         message.id = i
         message.time++
         messages.push JSON.stringify(message)
-      
+
       thenjs.each messages, (cont, message)->
         client.lpush 'messages', message, cont
-      .then (cont, results)-> 
+      .then (cont, results)->
         console.log results[0], '====redis=====1'
         done()
       .fail (cont, err)->

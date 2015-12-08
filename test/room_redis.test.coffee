@@ -11,13 +11,13 @@ strings = require '../config/strings'
 #   client.on 'error', (err)->
 #     console.log err
 #     channel = 'aaa' #strings.room_message_channels_prefix + '#hi'
-    
+
 #   room_redis ->
 #     i= 0
 #     setInterval ->
 #       client.publish channel, i++
 #     ,100
-  
+
 #   it 'redis-server offline', (done)->
 #       # setTimeout ->
 #       #   room_redis.quit()

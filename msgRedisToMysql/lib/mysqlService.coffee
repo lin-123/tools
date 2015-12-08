@@ -10,7 +10,7 @@ module.exports =
   insertDataByRecursive: (messages, callback)->
     if messages.length <= 1000
       setTimeout @insertDataByLoop(messages, callback), 0
-      return 
+      return
 
     thenjs.parallel [(cont)=>
       messagesLeftChild = messages.splice(0, parseInt(messages.length/2))
@@ -19,16 +19,16 @@ module.exports =
     ,(cont)=>
       messagesRightChild = messages
       @insertDataByRecursive messagesRightChild, cont
-    
+
     ]
-    .then (cont, results)-> 
+    .then (cont, results)->
       callback null
-    
+
     .fail (cont, err)->
       console.log err
       logger.error "#{__filename}.insertDataByRecursive ", err
       callback err
-  
+
   #循环调用
   #
   #全部存储成功 返回 null
@@ -37,7 +37,7 @@ module.exports =
     if messages.length <= 0
       return callback null
     pool.getConnection (err, conn)->
-      if err 
+      if err
         logger.error "#{__filename}.insertDataByLoop pool.getConnection callback err", err
         return callback err
 
@@ -49,7 +49,7 @@ module.exports =
           cont err
 
           # if err
-          #   errMsg = 
+          #   errMsg =
           #     err:err
           #     messageId: message.id
           #     length: length
@@ -59,10 +59,9 @@ module.exports =
       .fin (cont, err)->
         if err
           logger.error "#{__filename}.insertDataByLoop conn.query callback err", err
-        errMsg = 
+        errMsg =
           err: err
           length: length
         callback errMsg
 
         pool.releaseConnection conn
-      

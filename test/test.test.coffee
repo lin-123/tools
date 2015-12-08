@@ -3,15 +3,6 @@ _ = require 'lodash'
 test = require '../lib/test'
 
 describe '验证测试', ->
-  describe.only 'should', ->
-    it 'Normal, null, undefined should be tested', ->
-      should.not.exist(null)
-      should.not.exist(undefined)
-      should.exist('array')
-    # it 'Error, string should exist', ->
-    #   should.not.exist('array')
-
-
   describe 'bind', ->
     it 'x should eql 0', ->
       console.log test.bindModule.getx()
@@ -49,22 +40,6 @@ describe '验证测试', ->
         return a-b
       console.log _sort1, 'compare sort'
 
-  describe 'exportsFolder', ->
-    # nodejs 载入文件模块，会搜索整个目录
-    # 1.目录下包含 package.json 文件， 则通过package.json 加载
-    # 2.否则， 查找 index.js 文件， 通过index.js 夹杂
-    # 3.目录下没有package.json 也没有 index.js 则加载失败。 （Error: Cannot find module '../exportsFolder'）
-
-    it "require('../lib/exportsFolder1') have package.json", ->
-      folder = require('../lib/exportsFolder1')
-      folder.should.be.Object()
-      folder.hello.should.be.Function()
-
-    it "require('../lib/exportsFolder2') have index.js", ->
-      folder = require('../lib/exportsFolder2')
-      folder.should.be.Object()
-      folder.hello.should.be.Function()
-
   describe 'lodash', ->
     it '_.filter', ->
       users = [
@@ -77,3 +52,28 @@ describe '验证测试', ->
       # _.forEach
 
       console.log _.filter(users, 'age__gt36')
+
+    xit.only 'asdfasdf',->
+      image =
+        name: "9.pic.jpg",
+        description: "好噶好噶",
+        url: "http://mobileService.qiniudn.com/9.pic.jpg",
+        viewUrl: "http://mobileService.qiniudn.com/9.pic.jpg?imageView2/0/w/250",
+        type: 1,
+        width: 250,
+        height: 99,
+        department: 1,
+        id: 1,
+        updatedAt: 10000
+
+      images=[]
+
+      for i in [0..10]
+        (image.id++) && (image.updatedAt++) &&(image.department%4 ++)
+        images.push image
+
+      _.chain(images)
+        .countBy(obj.department)
+        .value()
+
+
