@@ -1,0 +1,22 @@
+{
+  "name": "hlj",
+  "description": "vue demo",
+  "main": "gulpfile.js",
+  "authors": [
+    "侯林江 <linjiang.hou@baidao.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/lin-123/vueDemo",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue-router": "~0.7.7",
+    "vue": "~1.0.10"
+  }
+}

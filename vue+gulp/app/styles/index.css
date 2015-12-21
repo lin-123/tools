@@ -1,0 +1,11 @@
+*{
+  padding: 0;
+  margin: 0;
+}
+body p{
+  color: red;
+  font-size: 30px;
+}
+body p:before{
+  content: 'this is the tag "p"'
+}
