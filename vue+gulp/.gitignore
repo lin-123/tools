@@ -1,0 +1,6 @@
+_dist
+_tmp
+node_modules
+bower_components
+
+gulpfile.js
