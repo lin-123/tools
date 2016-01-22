@@ -1,75 +1,85 @@
-gulp = require 'gulp'
-browserify = require 'browserify'
-vueify = require('vueify')
-source = require('vinyl-source-stream')
-del = require 'del'
-coffeeify = require 'coffeeify'
+gulp = require "gulp"
+browserify = require "browserify"
+vueify = require("vueify")
+source = require("vinyl-source-stream")
 
-usemin = require 'gulp-usemin'
-uglify = require 'gulp-uglify' #压缩js
-cssmin = require 'gulp-minify-css' #压缩css
-htmlmin = require 'gulp-htmlmin'
-
-sequence = require 'run-sequence'
-browserSync = require('browser-sync')
+del = require "del"
+coffeeify = require "coffeeify"
+browserSync = require("browser-sync")
 reload = browserSync.reload
 
+runSequence = require('run-sequence')
+
+usemin = require "gulp-usemin"
+uglify = require "gulp-uglify" #压缩js
+cssmin = require "gulp-minify-css" #压缩css
+imagemin = require 'gulp-imagemin'
+htmlmin = require 'gulp-htmlmin'
+
+config =
+  srcFolder: "./app"
+  tmpFolder: "_tmp"
+  releaseFolder: "_dist"
+
+  port: 9001
+
+targetFolder = config.tmpFolder
+
 # 打包js
-gulp.task 'browserify', ->
+gulp.task "browserify", ->
   browserify
-    entries: 'app/scripts/index.coffee'
+    entries: ["#{config.srcFolder}/scripts/index.coffee"]
     extensions: ['.js', '.coffee', '.vue']
   .transform coffeeify
   .transform vueify
   .bundle()
-  .pipe(source('bundle.js'))
-  .pipe gulp.dest('.tmp/scripts')
+  .pipe(source("bundle.js"))
+  .pipe gulp.dest("#{targetFolder}/scripts")
 
-gulp.task 'cssmin', ->
-  gulp.src '.tmp/styles/index.css'
-    .pipe cssmin()
-    .pipe gulp.dest 'dist/styles'
+# 压缩
+gulp.task 'images', ->
+  gulp.src "#{config.srcFolder}/images/**/*"
+  .pipe imagemin {optimizationLevel: 5, progressive: true, interlaced: true}
+  .pipe gulp.dest "#{targetFolder}/images"
 
-gulp.task 'uglify', ->
-  gulp.src '.tmp/scripts/*.js'
-    .pipe uglify()
-    .pipe gulp.dest 'dist/scripts'
+gulp.task "cssmin", ->  gulp.src("#{targetFolder}/styles/*.css").pipe(cssmin()).pipe gulp.dest "#{targetFolder}/styles"
+gulp.task "uglify", ->  gulp.src("#{targetFolder}/scripts/*.js").pipe(uglify()).pipe gulp.dest "#{targetFolder}/scripts"
+gulp.task "htmlmin", -> gulp.src("#{targetFolder}/index.html").pipe(htmlmin({collapseWhitespace: true})).pipe gulp.dest "#{targetFolder}"
 
-gulp.task 'htmlmin', ->
-  gulp.src '.tmp/index.html'
-    .pipe htmlmin({collapseWhitespace: true})
-    .pipe gulp.dest 'dist'
-
-gulp.task 'usemin', ->
-  gulp.src 'app/index.html'
-    .pipe usemin()
-    .pipe gulp.dest '.tmp'
-
-# 在浏览器启动服务
-gulp.task 'server', ['browserify', 'usemin'], ->
-  browserSync
-    server:
-      baseDir: '.tmp'
-    port: 3000
+gulp.task "usemin", ->  gulp.src("#{config.srcFolder}/index.html").pipe(usemin()).pipe gulp.dest "#{targetFolder}"
 
 # 实时观测
-gulp.task 'watch', ->
-  gulp.watch ['app/scripts/**/*.coffee', 'app/scripts/**/*.vue'], ['browserify']
-  gulp.watch ['app/index.html', 'app/styles/**/*.*'], ['usemin']
+gulp.task "watch", ->
+  gulp.watch ["#{config.srcFolder}/scripts/**/*.*"], ["browserify"]
 
-  gulp.watch ['.tmp/**/*.*'], reload
+  gulp.watch ["#{config.srcFolder}/index.html", "#{config.srcFolder}/styles/**/*.css"], ["usemin"]
 
-gulp.task 'default', ->
-  sequence 'clean', 'server', 'watch'
+  gulp.watch ["#{config.srcFolder}/images/**/*"], ['images']
+  gulp.watch ["#{targetFolder}/**/*"], reload
 
-  console.log 'server start at 3000...'
+# 在浏览器启动服务
+gulp.task "server", ->
+  browserSync
+    server:
+      baseDir: "#{targetFolder}"
+    port: config.port
+  console.log "server start at #{config.port}..."
 
-gulp.task 'build', ->
-  sequence(
+gulp.task "build", ->
+  targetFolder = config.releaseFolder
+  runSequence(
     'clean',
-    ['browserify', 'usemin'],
-    ['cssmin', 'uglify', 'htmlmin']
+    ["browserify", "usemin", 'images'],
+    ["cssmin", "uglify", 'htmlmin']
   )
+gulp.task 'dev', ->
+  targetFolder = config.tmpFolder
+  runSequence(
+    'clean',
+    ["browserify", "images", "usemin"],
+    ['server', "watch"]
+    )
 
-gulp.task 'clean', ->
-  del ['.tmp', 'dist']
+gulp.task "default", ['dev'], -> console.log '=======run task======='
+
+gulp.task "clean", (arg)-> del [targetFolder]
