@@ -5,5 +5,21 @@ javascript 用 coffee
 css 用 .css
 vue 中CSS 和 js 随意
 
-启动 gulp，  url: localhost:3000, 文件打包到 .tmp 不压缩
+启动 gulp，  url: localhost:9001, 文件打包到 .tmp 不压缩
 build: gulp build 文件打包到 dist 压缩
+
+目录结构： 
+root： 
+    app
+        images
+        scripts
+            components
+            utils
+            index.coffee
+        styles
+        index.html
+    bower.json 
+    gulpfile.coffee 
+    gulpfile.js 
+    package.json 
+    readme.md
