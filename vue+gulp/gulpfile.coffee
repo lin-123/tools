@@ -1,13 +1,15 @@
 gulp = require "gulp"
 browserify = require "browserify"
 vueify = require("vueify")
+coffeeify = require "coffeeify"
+babelify = require 'babelify'
+
 source = require("vinyl-source-stream")
 
 del = require "del"
-coffeeify = require "coffeeify"
+
 browserSync = require("browser-sync")
 reload = browserSync.reload
-
 runSequence = require('run-sequence')
 
 usemin = require "gulp-usemin"
@@ -17,6 +19,7 @@ imagemin = require 'gulp-imagemin'
 htmlmin = require 'gulp-htmlmin'
 
 config =
+  entryFile: "#{config.srcFolder}/scripts/index.coffee"
   srcFolder: "./app"
   tmpFolder: "_tmp"
   releaseFolder: "_dist"
@@ -25,12 +28,13 @@ config =
 
 targetFolder = config.tmpFolder
 
-# 打包js
+# 打包js, js兼容coffee, es6
 gulp.task "browserify", ->
   browserify
-    entries: ["#{config.srcFolder}/scripts/index.coffee"]
+    entries: [config.entryFile]
     extensions: ['.js', '.coffee', '.vue']
   .transform coffeeify
+  .transform babelify
   .transform vueify
   .bundle()
   .pipe(source("bundle.js"))

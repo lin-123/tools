@@ -1,7 +1,8 @@
 配置一个基础的框架。
 让使用者只需要 在指定目录添加代码即可完成自动化编译， 打包， 等过程。
 
-javascript 用 coffee
+javascript 用 coffee, es6
+
 css 用 .css
 vue 中CSS 和 js 随意
 
