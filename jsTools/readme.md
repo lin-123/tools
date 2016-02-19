@@ -1,0 +1,9 @@
+js 使用工具集
+
+
+##src 
+1. 0jsNative.js   原生js使用
+2. 1jsNative.coffee  原生js使用， 只不过用的是coffee-script 
+  1，2 都是对原生js的使用， 只是一个是coffee， 一个是js
+3.  nodejs.coffee nodejs环境
+4. es6.js 编辑es6代码， 需要通过es6.src.js 编译后运行， 即：`node lib/es6.src.js `
