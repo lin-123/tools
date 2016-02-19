@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>css 样式集</title>
+  <link rel="stylesheet" type="text/css" href="./common.css">
+</head>
+<body>
+<div class="content" id='position_1'>
+  <h1>定位：float</h1>
+  <div class="block_1"></div>
+  <div class="block_2"></div>
+  <div class="block_3"></div>
+  <script type="text/javascript">
+    document.getElementById('position_1').addEventListener('click', function(e){
+      window.elem = e;
+      _tag = e.target.tagName.toUpperCase()
+      if(_tag === 'DIV'){
+        console.log(e.target.className, 'clicked');
+      }
+    })
+  </script>
+  <style type="text/css">
+    #position_1 .block_1{
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      float: left;
+    }
+    #position_1 .block_2{
+      width: 50px;
+      height: 30px;
+      background-color: black;
+    }
+    #position_1 .block_3{
+      width: 30px;
+      height: 50px;
+      background-color: green;
+    }
+
+  </style>
+</div>
+
+<div class="content">
+  <h1>图片上设置a标签跳转</h1>
+  <p>
+    <a href="#" style="position:absolute; height:46px;width: 493px;">a标签浮层</a>
+    <img alt="" height="46" src="http://www.baidao.com/uploads/mobile/2016/02/15/131527988_5579.jpg" width="493">
+  </p>
+</div>
+
+</body>
+</html>
