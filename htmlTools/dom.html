@@ -74,13 +74,15 @@
     <p>first p tag</p>
     <script type="text/javascript">
       _document = getPartDocument('insertHTML_1')
-      // 1. insertAdjacentHTML 将任意的HTML标记字符串插入到指定的元素的相邻位置，
+      // 1. ========= insertAdjacentHTML ==========
+      // 将任意的HTML标记字符串插入到指定的元素的相邻位置，
       // 第一个参数：beforeBegin afterBegin beforeEnd afterEnd
       // 第二个参数是html标记字符串 如： 'this is a message', '<p>this is another message</p>'
       // _document.querySelector('p').insertAdjacentHTML('beforeBegin', _document.querySelectorAll('p')[0].outerHTML)
       _document.querySelector('p').insertAdjacentHTML('beforeBegin', '<p>insertAdajcentHTML: this is another message</p>')
 
-      // 2.使用 appendChild inserBefore将文档中已存在的节点再次插入， 那个节点将自动从它当前位置删除并在新的位置重新插入
+      // 2.========= appendChild inserBefore ===========
+      // 使用 appendChild inserBefore将文档中已存在的节点再次插入， 那个节点将自动从它当前位置删除并在新的位置重新插入
       var newLabel = document.createElement('label')
       newLabel.innerText = '先insertBefore后appendChild 结果:  这个标签将会插入到文档后面'
       newLabel.style.color = 'red'
