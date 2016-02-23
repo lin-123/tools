@@ -9,6 +9,9 @@
     margin: 0 20px 20px;
   }
   </style>
+  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="../bower_components/thenjs/then.js"></script>
+  <script type="text/javascript" src="../lib/client.js"></script>
 </head>
 <body>
   <h1>client javascript</h1>
@@ -19,9 +22,24 @@
   <div class="content">
     <h1>iframe 实现从服务端拉取数据</h1>
   </div>
+  <div class="content" id='uploadFile_4'>
+    <h1>上传文件</h1>
+    <input type='file'></input>
+  </div>
 
+  <div class="content">
+    <h1>http request</h1>
+    <div id="response_data">===response_data===</div>
+    <!--
+      jsonp 原理
+      http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html
+    -->
+    <!-- 通过script中src实现跨域， 将返回的结果作为回调函数返回[回调函数：callbackFunc]  -->
+    <script type="text/javascript">
+      function callbackFunc(){console.log('this is callback function')}
+    </script>
+    <script type="text/javascript" src='http://url?callbackFunc'></script>
+  </div>
 
-  <script type="text/javascript" src="../bower_components/thenjs/then.js"></script>
-  <script type="text/javascript" src="../lib/0jsNative.js"></script>
 </body>
 </html>

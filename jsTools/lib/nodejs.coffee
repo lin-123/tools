@@ -176,8 +176,8 @@ expressFunc = ->
   # 获取文件路径用 __filename
   htmlFile = require('path').join __dirname, "../resource/fragment.html"
   app.get '/',(req, res)->
+    console.log req
     res.sendFile htmlFile # 返回一个html网页
 
     # res.send 'kakaka'
   app.listen(3001)
-expressFunc()

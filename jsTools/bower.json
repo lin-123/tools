@@ -17,5 +17,8 @@
   ],
   "dependencies": {
     "thenjs": "~2.0.2"
+  },
+  "devDependencies": {
+    "jquery": "~2.2.0"
   }
 }
