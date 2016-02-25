@@ -4,14 +4,103 @@
   <title>dom</title>
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="./common.css">
-  <script type="text/javascript">
-    // 返回每个代码块的局部 document对象， 就是包裹此代码快的 div元素
-    function getPartDocument(id){
-      return document.getElementById(id)
-    }
-  </script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+  <!-- <link rel="stylesheet" type="text/css" href="http://code.jquery.com/jquery-2.2.1.min.js"> -->
+  <script type="text/javascript" src='./common.js'></script>
 </head>
 <body>
+  <div class="content">
+    <h1>jquery</h1>
+    <div class="content" id='jquery_class_opt'>
+      <h2>class 操作</h2>
+      <ul>
+        <li>===1=====</li>
+        <li>===2=====</li>
+        <li>===3=====</li>
+      </ul>
+      <button>li 样式开关</button>
+      <script type="text/javascript">
+        (function(){
+          $('#jquery_class_opt h2').addClass('red')
+          var hadClass = false
+          $($('#jquery_class_opt button')[0]).click(function(){
+            if(!hadClass){
+              // 为li添加类
+              $('#jquery_class_opt li').addClass(function(index, _class){
+                return 'class_li li_index_'+index
+              })
+            }else{
+              // 删除 li 标签上所有的类
+              $('#jquery_class_opt li').removeClass()
+            }
+            hadClass = !hadClass
+          })
+        }).call(this)
+      </script>
+      <style type="text/css">
+        #jquery_class_opt button{
+          width: 200px;
+          height: 50px;
+          background: #777;
+          font-size: 20px;
+          color: white;
+        }
+        .class_li{
+          padding: 5px 0 5px 20px;
+          list-style-type: none;
+          text-shadow: 0 1px 0 #ffffff;
+          color: red;
+        }
+      </style>
+    </div>
+    <div class="content" id='jquery_slideUp'>
+      点我消失
+      <p class="red">$('#jquery_slideUp').click(function(){$(this).slideUp('slow')})</p>
+      <script type="text/javascript">
+        $('#jquery_slideUp').click(function(){$(this).slideUp('slow')})
+      </script>
+    </div>
+    <div class="content" id="jquery_each">
+      <h2>jquery的each用法</h2>
+      <p>===tag 1===</p>
+      <p style="display: none;">===tag 2===</p>
+      <p>===tag 3===</p>
+      <script type="text/javascript">
+        (function(){
+          // $(a).each(f)
+          var _this = []
+          $('#jquery_each p').each(function(index, el){
+            // this 为当前这个元素 this=el
+            // _this.push(this)
+            el.innerText += '// $(a).each(f)'
+            // console.log("$(a).each(f): ", index, el, this)
+          })
+
+          // $.each(a,f)
+          $.each([1,2,3], function(index, val){
+            // console.log('$.each(a, f): ', index, val, this)
+          })
+        }).call(this)
+      </script>
+    </div>
+  </div>
+
+  <div class="content" id="CORS">
+    <h1>跨域</h1>
+    <div id="response_data">===response_data===</div>
+      <!--
+        jsonp 原理
+        http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html
+      -->
+      <!-- 通过script中src实现跨域， 将返回的结果作为回调函数返回[回调函数：callbackFunc]  -->
+      <script type="text/javascript">
+        function callbackFunc(){console.log('this is callback function')}
+      </script>
+      <!-- src中填要请求的url?callbackFunc eg: localhost:1337/user?callbackFunc -->
+      <script type="text/javascript" src=''></script>
+    </div>
+  </div>
+
   <div class="content" id='elemRectAndScroll_3'>
     <h1>查询元素的几何尺寸 getBoundingClientRect</h1>
     <p>这里显示上面标题的尺寸： <span class="red"></span></p>
@@ -25,7 +114,7 @@
     </div>
     <script type="text/javascript">
       // 1.元素的几何尺寸
-      _document = getPartDocument('elemRectAndScroll_3')
+      _document = utils.getPartDocument('elemRectAndScroll_3')
       rect = _document.querySelector('h1').getBoundingClientRect()
       _document.getElementsByTagName('span')[0].innerText = "width: "+rect.width+" height: "+rect.height
 
@@ -48,24 +137,28 @@
     </style>
   </div>
 
-
-
   <div class="content" id='dom_selector_2'>
     <h1>dom选择器</h1>
     <div id='parent_tag' name='div_p'>
       <p id="child_tag">dom 选择器</p>
     </div>
     <script type="text/javascript">
-      // 1.dom选择器 tag+id 选择
-      var document = getPartDocument('dom_selector_2')
-      var parentTag = document.getElementById('parent_tag')
-      var childTag = parentTag.getElementsByTagName('p')[0]
-      console.log(childTag === document.getElementById('child_tag'), childTag.innerHTML, 'dom选择器， 不仅可以用document选择， 每个element也有getElementsByTagName的属性')
+      (function(){
+        onload = function(){
+          // 1.dom选择器 tag+id 选择
+          var parentTag = document.getElementById('parent_tag')
+          var childTag = parentTag.getElementsByTagName('p')[0]
+          // console.log(childTag === document.getElementById('child_tag'), childTag.innerHTML, 'dom选择器， 不仅可以用document选择， 每个element也有getElementsByTagName的属性')
+          // childTag === document.getElementById('child_tag')
+          utils.appendElement('child_tag', 'afterEnd', "childTag.innerHTML: "+childTag.innerHTML)
 
-      // 2. css选择器方式， 通过document.querySelectorAll('此处添加css 选择器的字符串参数')
-      // querySelectorAll, 和querySelector都可以用css选择器的字符串作为参数， 前者返回nodeList, 后者返回第一个元素， 【 非常强大 】， jQuery中就用到这种技术
-      // div[name="div_p"] 选择name=div_p的div元素
-      console.log('2. css选择器方式\n', document.querySelectorAll('*[name="div_p"]'))
+          // 2. css选择器方式， 通过document.querySelectorAll('此处添加css 选择器的字符串参数')
+          // querySelectorAll 和querySelector都可以用css选择器的字符串作为参数， 前者返回nodeList, 后者返回第一个元素， 【 非常强大 】， jQuery中就用到这种技术
+          // div[name="div_p"] 选择name=div_p的div元素
+          // console.log('2. css选择器方式\n', document.querySelectorAll('*[name="div_p"]'))
+          utils.appendElement('child_tag', 'afterEnd', '2. css选择器方式\n' + document.querySelectorAll('*[name="div_p"]'))
+        }
+      }).call(this)
     </script>
   </div>
 
@@ -73,30 +166,32 @@
     <h1>html插入内容 insertAdajcentHTML </h1>
     <p>first p tag</p>
     <script type="text/javascript">
-      _document = getPartDocument('insertHTML_1')
-      // 1. ========= insertAdjacentHTML ==========
-      // 将任意的HTML标记字符串插入到指定的元素的相邻位置，
-      // 第一个参数：beforeBegin afterBegin beforeEnd afterEnd
-      // 第二个参数是html标记字符串 如： 'this is a message', '<p>this is another message</p>'
-      // _document.querySelector('p').insertAdjacentHTML('beforeBegin', _document.querySelectorAll('p')[0].outerHTML)
-      _document.querySelector('p').insertAdjacentHTML('beforeBegin', '<p>insertAdajcentHTML: this is another message</p>')
+      (function(document){
+        _document = utils.getPartDocument('insertHTML_1')
+        // 1. ========= insertAdjacentHTML ==========
+        // 将任意的HTML标记字符串插入到指定的元素的相邻位置，
+        // 第一个参数：beforeBegin afterBegin beforeEnd afterEnd
+        // 第二个参数是html标记字符串 如： 'this is a message', '<p>this is another message</p>'
+        // _document.querySelector('p').insertAdjacentHTML('beforeBegin', _document.querySelectorAll('p')[0].outerHTML)
+        _document.querySelector('p').insertAdjacentHTML('beforeBegin', '<p>insertAdajcentHTML: this is another message</p>')
 
-      // 2.========= appendChild inserBefore ===========
-      // 使用 appendChild inserBefore将文档中已存在的节点再次插入， 那个节点将自动从它当前位置删除并在新的位置重新插入
-      var newLabel = document.createElement('label')
-      newLabel.innerText = '先insertBefore后appendChild 结果:  这个标签将会插入到文档后面'
-      newLabel.style.color = 'red'
-      _document.insertBefore(newLabel, _document.firstChild)
-      _document.appendChild(newLabel)
+        // 2.========= appendChild inserBefore ===========
+        // 使用 appendChild inserBefore将文档中已存在的节点再次插入， 那个节点将自动从它当前位置删除并在新的位置重新插入
+        var newLabel = document.createElement('label')
+        newLabel.innerText = '先insertBefore后appendChild 结果:  这个标签将会插入到文档后面'
+        newLabel.style.color = 'red'
+        _document.insertBefore(newLabel, _document.firstChild)
+        _document.appendChild(newLabel)
 
-      // 2.1 通过document创建一个新的p元素, 然后将其插入doc文档中，也可以多次插入
-      var newP = {}
-      for(i in [0,1,2]){
-        newP = document.createElement('p')
-        newP.innerText='insertBefore: this is new p tag'
-        _document.insertBefore(newP, _document.firstChild)
-        // _document.appendChild(newP)
-      }
+        // 2.1 通过document创建一个新的p元素, 然后将其插入doc文档中，也可以多次插入
+        var newP = {}
+        for(i in [0,1,2]){
+          newP = document.createElement('p')
+          newP.innerText='insertBefore: this is new p tag'
+          _document.insertBefore(newP, _document.firstChild)
+          // _document.appendChild(newP)
+        }
+      },this)
     </script>
   </div>
 </body>

@@ -5,3 +5,10 @@
 .red{
   color: red;
 }
+.log{
+  background-color: #eee;
+}
+.log:before{
+  content: 'console.log: ';
+  color: green;
+}
