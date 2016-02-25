@@ -1,0 +1,18 @@
+{
+  "name": "server.js",
+  "description": "",
+  "main": "client.js",
+  "authors": [
+    "侯林江 <linjiang.hou@baidao.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/lin-123/tools",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
