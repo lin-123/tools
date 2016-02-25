@@ -1,3 +1,27 @@
+var uploadFile = function(){
+  $('#uploadFile_4 input')[0].addEventListener('change', function(){
+  var file = this.files[0]
+  if(!file) return console.log('没有文件')
+  var xmlhttp = new XMLHttpRequest()
+  xmlhttp.open("POST","ajax_test.asp",true);
+  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xmlhttp.send("fname=Bill&lname=Gates");
+
+  // $.ajax({
+  //   type: "POST",
+  //   dataType: "jsonp",
+  //   url: 'localhost:3001',
+  //   data: file,
+  //   success: function(){
+  //     console.log(arguments, 'upload file success')
+  //   },
+  //   error: function(){
+  //     console.log(arguments,'upload file error')
+  //   }
+  // })
+})
+}
+
 var ajaxHttpRequest = function(){
   // http request
   // jsonp 原理
@@ -25,30 +49,6 @@ var ajaxHttpRequest = function(){
   $.getJSON("http://localhost:1337/user", function(result){
     console.log(result)
   })
-}
-
-var uploadFile = function(){
-  $('#uploadFile_4 input')[0].addEventListener('change', function(){
-  var file = this.files[0]
-  if(!file) return console.log('没有文件')
-  var xmlhttp = new XMLHttpRequest()
-  xmlhttp.open("POST","ajax_test.asp",true);
-  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send("fname=Bill&lname=Gates");
-
-  // $.ajax({
-  //   type: "POST",
-  //   dataType: "jsonp",
-  //   url: 'localhost:3001',
-  //   data: file,
-  //   success: function(){
-  //     console.log(arguments, 'upload file success')
-  //   },
-  //   error: function(){
-  //     console.log(arguments,'upload file error')
-  //   }
-  // })
-})
 }
 
 // document ready
