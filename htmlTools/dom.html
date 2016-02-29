@@ -9,6 +9,85 @@
   <script type="text/javascript" src='./common.js'></script>
 </head>
 <body>
+  <div class="content" id="video_1">
+    <h1>video</h1>
+    <div class="video_wraper">
+      <img class='video_loading' src="https://d13yacurqjgara.cloudfront.net/users/82092/screenshots/1073359/spinner.gif" alt="">
+      <img class='video_preview_img' src="./images/flower.jpg">
+      <a class='video_pop_ad' href="#" target="blank"></a>
+      <video src="http://58.51.241.19/v.cctv.com/flash/mp4video1/huangjinqiangdang/2010/01/02/huangjinqiangdang_h264818000nero_aac32000_20100102_1262437187617-1.mp4" controls preload="none" width="80%" height="60%"></video>
+    </div>
+    <script type="text/javascript">
+      (function(){
+        window.el_video = $('#video_1 video')[0]
+        var preview_img = $('#video_1 .video_preview_img')[0]
+        var video_loading = $('#video_1 .video_loading')[0]
+        var ad_img = $('#video_1 .video_pop_ad')[0]
+
+        var video_init=false;
+        $(el_video).click(function(){
+          el_video.paused?el_video.play():el_video.pause()
+          ad_img.hidden=!el_video.paused; //预览图片， 也可以是广告之类
+          (!video_init)&&(preview_img.hidden=true)&&(video_init=true)&&(video_load_watcher())
+        })
+
+        // 监听视频加载状况
+        function video_load_watcher(){
+          var video_load_schedule = setInterval(function(){
+            console.log(el_video.readyState, 'video state')
+            video_loading.hidden = false
+            if(el_video.readyState > 2){
+              video_loading.hidden=true;
+              // clearInterval(video_load_watcher)
+            }
+          },1000)
+        }
+
+      }).call(this)
+    </script>
+    <style type="text/css">
+      #video_1 .video_wraper{
+        width: 400px;
+        height: 300px;
+        position: relative;
+      }
+      #video_1 .video_pop_ad{
+        width: 60%;
+        height: 40%;
+        position: absolute;
+        z-index: 3;
+        top: 30%;
+        left: 20%;
+        background: url('./images/ad.jpg');
+        background-size: 100% 100%;
+      }
+
+      #video_1 video, #video_1 img{
+        width: 100%;
+        height: 100%;
+      }
+      #video_1 img{
+        position: absolute;
+        /*z-index: 3;*/
+      }
+      #video_1 video_loading{
+        display: none;
+      }
+
+    </style>
+  </div>
+  <!-- <div class="know">
+    <div class="video-wraper">
+      <a class="marsk-loading" v-if='!videoReady'>
+        <img v-show="vcrUrl" src="images/loading-video.gif">
+        <p v-show="!vcrUrl">ops， 视频去哪了</p>
+      </a>
+      <img id='video-preview' :src="imgUrl" v-if='showImg' @click='videoPlay'>
+      <video id="info-video" v-d-video-switch controls :src='vcrUrl'></video>
+    </div>
+  </div>
+ -->
+
   <div class="content">
     <h1>jquery</h1>
     <div class="content" id='jquery_class_opt'>
@@ -113,20 +192,22 @@
       <p>================4</p>
     </div>
     <script type="text/javascript">
-      // 1.元素的几何尺寸
-      _document = utils.getPartDocument('elemRectAndScroll_3')
-      rect = _document.querySelector('h1').getBoundingClientRect()
-      _document.getElementsByTagName('span')[0].innerText = "width: "+rect.width+" height: "+rect.height
+      (function(){
+        // 1.元素的几何尺寸
+        _document = utils.getPartDocument('elemRectAndScroll_3')
+        rect = _document.querySelector('h1').getBoundingClientRect()
+        _document.getElementsByTagName('span')[0].innerText = "width: "+rect.width+" height: "+rect.height
 
-      // 2.滚动
-      function scrollXX(){
-        window.scroll(0, 10) //两个参数，为x,y坐标， 表示窗口滚动到指定的点出现在视口的左上角 作用=scrollTo
-        window.scrollBy(0, 10) //两个参数，为x,y坐标， 表示相对当前窗口滚动(0, 10)个像素
-        setTimeout(function(){
-          document.querySelectorAll('#scroll_div p')[3].scrollIntoView()
-        }, 100)
-      }
-      scrollXX()
+        // 2.滚动
+        function scrollXX(){
+          window.scroll(0, 10) //两个参数，为x,y坐标， 表示窗口滚动到指定的点出现在视口的左上角 作用=scrollTo
+          window.scrollBy(0, 10) //两个参数，为x,y坐标， 表示相对当前窗口滚动(0, 10)个像素
+          setTimeout(function(){
+            document.querySelectorAll('#scroll_div p')[3].scrollIntoView()
+          }, 100)
+        }
+        // scrollXX()
+      }).call(this)
     </script>
 
     <style type="text/css">
