@@ -3,18 +3,44 @@
 <head>
   <title>dom</title>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--[if lt IE 9]> <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script> <![endif]-->
   <link rel="stylesheet" type="text/css" href="./common.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
   <!-- <link rel="stylesheet" type="text/css" href="http://code.jquery.com/jquery-2.2.1.min.js"> -->
   <script type="text/javascript" src='./common.js'></script>
 </head>
 <body>
+  <div class="content">
+    <h1>自适应</h1>
+    <script type="text/javascript">
+      // 根据窗口的宽度设置fontSize的单位值
+      // 针对嵌套的窗口或手机上横屏状态 重置fontSize的单位值
+      document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+      addEventListener('load', function() {
+        setTimeout(function(){
+            document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+        }, 480);
+        // 判断窗口是否在一个框架中
+        var isInApp = (window.self != window.top);
+        if (!isInApp) {
+            window.parent.postMessage({name: 'web:inject', token: Math.random().toString(), usertype: 1}, '*');
+        }
+      })
+      addEventListener('orientationchange', function() {
+          document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px'
+      });
+    </script>
+  </div>
+
   <div class="content" id="video_1">
     <h1>video</h1>
     <div class="video_wraper">
-      <img class='video_loading' src="https://d13yacurqjgara.cloudfront.net/users/82092/screenshots/1073359/spinner.gif" alt="">
+      <!-- 当没有加载视频资源失败或没有视频资源时显示， 此处3s后消失 -->
+      <a class="video_not_found">ops 视频去哪了</a>
+      <a class='video_pop_ad' href="#advertisement_address" target="blank"></a>
       <img class='video_preview_img' src="./images/flower.jpg">
-      <a class='video_pop_ad' href="#" target="blank"></a>
+      <img class='video_loading' src="https://d13yacurqjgara.cloudfront.net/users/82092/screenshots/1073359/spinner.gif" alt="">
       <video src="http://58.51.241.19/v.cctv.com/flash/mp4video1/huangjinqiangdang/2010/01/02/huangjinqiangdang_h264818000nero_aac32000_20100102_1262437187617-1.mp4" controls preload="none" width="80%" height="60%"></video>
     </div>
     <script type="text/javascript">
@@ -26,15 +52,16 @@
 
         var video_init=false;
         $(el_video).click(function(){
-          el_video.paused?el_video.play():el_video.pause()
-          ad_img.hidden=!el_video.paused; //预览图片， 也可以是广告之类
+          el_video.paused?el_video.play():el_video.pause() ;
           (!video_init)&&(preview_img.hidden=true)&&(video_init=true)&&(video_load_watcher())
         })
 
         // 监听视频加载状况
         function video_load_watcher(){
           var video_load_schedule = setInterval(function(){
-            console.log(el_video.readyState, 'video state')
+            console.log(el_video.readyState, 'video state');
+            ad_img.hidden=!el_video.paused; //预览图片， 也可以是广告之类
+
             video_loading.hidden = false
             if(el_video.readyState > 2){
               video_loading.hidden=true;
@@ -43,6 +70,10 @@
           },1000)
         }
 
+        // 没有视频资源的图片演示
+        setTimeout(function(){
+          $('#video_1 .video_not_found')[0].hidden = true;
+        }, 3000)
       }).call(this)
     </script>
     <style type="text/css">
@@ -50,6 +81,7 @@
         width: 400px;
         height: 300px;
         position: relative;
+        margin: .1rem;
       }
       #video_1 .video_pop_ad{
         width: 60%;
@@ -62,31 +94,29 @@
         background-size: 100% 100%;
       }
 
-      #video_1 video, #video_1 img{
+      #video_1 video, #video_1 img, #video_1 a{
         width: 100%;
         height: 100%;
       }
+
+      #video_1 a{
+        background: black;
+        position: absolute;
+        z-index: 10;
+        text-align: center;
+        padding-top: 30%;
+      }
+
       #video_1 img{
         position: absolute;
         /*z-index: 3;*/
       }
-      #video_1 video_loading{
+      #video_1 .video_loading{
         display: none;
       }
 
     </style>
   </div>
-  <!-- <div class="know">
-    <div class="video-wraper">
-      <a class="marsk-loading" v-if='!videoReady'>
-        <img v-show="vcrUrl" src="images/loading-video.gif">
-        <p v-show="!vcrUrl">ops， 视频去哪了</p>
-      </a>
-      <img id='video-preview' :src="imgUrl" v-if='showImg' @click='videoPlay'>
-      <video id="info-video" v-d-video-switch controls :src='vcrUrl'></video>
-    </div>
-  </div>
- -->
 
   <div class="content">
     <h1>jquery</h1>

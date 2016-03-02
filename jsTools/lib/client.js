@@ -1,25 +1,31 @@
-var uploadFile = function(){
-  $('#uploadFile_4 input')[0].addEventListener('change', function(){
-  var file = this.files[0]
-  if(!file) return console.log('没有文件')
-  var xmlhttp = new XMLHttpRequest()
-  xmlhttp.open("POST","ajax_test.asp",true);
-  xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xmlhttp.send("fname=Bill&lname=Gates");
+$(document).ready(function(){
+  $("uploadFile_4 input").change(function(){
+    files = this.files;
+  });
+});
+uploadFile = function (){
+  // var files = [];
+  // $('#uploadFile_4 input')[0].addEventListener('change', function(){
+  // var file = this.files[0]
+  // if(!file) return console.log('没有文件')
 
-  // $.ajax({
-  //   type: "POST",
-  //   dataType: "jsonp",
-  //   url: 'localhost:3001',
-  //   data: file,
-  //   success: function(){
-  //     console.log(arguments, 'upload file success')
-  //   },
-  //   error: function(){
-  //     console.log(arguments,'upload file error')
-  //   }
-  // })
-})
+  $("#upload-btn").click(function(){
+    var fd = new FormData();
+    for (var i = 0; i < files.length; i++) {
+      fd.append("file", files[i]);
+    }
+    $.ajax({
+      url: "/upload/",
+      method: "POST",
+      data: fd,
+      contentType: false,
+      processData: false,
+      cache: false,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
 }
 
 var ajaxHttpRequest = function(){

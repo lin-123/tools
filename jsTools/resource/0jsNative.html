@@ -16,15 +16,34 @@
 <body>
   <h1>client javascript</h1>
   <div class="content">
+    <h1>video</h1>
+    <video src="http://58.51.241.19/v.cctv.com/flash/mp4video1/huangjinqiangdang/2010/01/02/huangjinqiangdang_h264818000nero_aac32000_20100102_1262437187617-1.mp4" controls></video>
+
+  </div>
+  <!-- <div class="know">
+    <div class="video-wraper">
+      <a class="marsk-loading" v-if='!videoReady'>
+        <img v-show="vcrUrl" src="images/loading-video.gif">
+        <p v-show="!vcrUrl">ops， 视频去哪了</p>
+      </a>
+      <img id='video-preview' :src="imgUrl" v-if='showImg' @click='videoPlay'>
+      <video id="info-video" v-d-video-switch controls :src='vcrUrl'></video>
+    </div>
+  </div>
+ -->
+  <div class="content">
     <p>js native</p>
     <p>thenjs</p>
   </div>
+
   <div class="content">
     <h1>iframe 实现从服务端拉取数据</h1>
   </div>
+
   <div class="content" id='uploadFile_4'>
     <h1>上传文件</h1>
     <input type='file'></input>
+    <button onclick='uploadFile'>上传</button>
   </div>
 
   <div class="content">
