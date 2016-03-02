@@ -1,4 +1,3 @@
-
 module.exports = $ =
   # nodejs 异步控制工具， thenjs, async
   thenjsOpt: ->
@@ -257,6 +256,24 @@ module.exports = $ =
 
       # res.send 'kakaka'
     app.listen(3001)
+
+  # 静态服务器
+  staticServer: ->
+    port=process.env.PORT || 9123
+    require('http').createServer (req, res)->
+      console.log('request: ', req.url)
+      url = req.url
+      if(url == '/') then url = '/index.html'
+      file_path = require('path').join(__dirname+url)
+
+      require('fs').readFile file_path, (err, chunk)->
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'})
+        msg = if err then '没找到对应文件， 请确认文件名是否正确' else chunk
+
+        res.write(msg,'utf8')
+        res.end()
+
+    ).listen(port)
 
 # process.env.agent
 funcName = process.env.runFunc
