@@ -17,6 +17,7 @@
     "babel-register": "^6.4.3",
     "mysql": "^2.10.2",
     "redis": "^2.4.2",
+    "socket.io": "^1.4.5",
     "thenjs": "^2.0.2"
   }
 }

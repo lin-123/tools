@@ -1,4 +1,41 @@
 $(document).ready(function(){
+  if(io){
+    // var port = 3000 //1337
+    // var socket = io.connect('http://localhost:'+port+'/channel_1')
+    // console.log(socket)
+
+
+    //  1337
+    var socket1 = io.connect('http://localhost:1337/socket.io')
+    console.log(socket1)
+    socket1.on('disconnect', function(){
+      console.log('disconnect')
+    })
+
+    socket1.on('connect', function(){
+      console.log('connect', arguments)
+
+    })
+    socket1.on('message', function(data){
+      console.log('receive message: ', arguments)
+    })
+
+    socket1.on('text', function(data){
+      console.log('receive text: ', arguments)
+      socket1.emit('text', 'adsf')
+    })
+
+  }
+})
+
+    // socket.on('sendMessageToRoom', function(data){
+    //   console.log('receive data: ', data)
+    // })
+    // socket.on('joinOrLeave', function(){
+    //   console.log('joinOrLeave, ', arguments)
+    // })
+
+$(document).ready(function(){
   $("uploadFile_4 input").change(function(){
     files = this.files;
   });
