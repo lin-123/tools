@@ -7,10 +7,122 @@
   <!--[if lt IE 9]> <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script> <![endif]-->
   <link rel="stylesheet" type="text/css" href="./common.css">
   <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
-  <!-- <link rel="stylesheet" type="text/css" href="http://code.jquery.com/jquery-2.2.1.min.js"> -->
   <script type="text/javascript" src='./common.js'></script>
 </head>
 <body>
+  <div class="content">
+    <h1>弹幕</h1>
+    <div class="content">
+      <p>这是一个video， 上面会出现一些弹幕</p>
+      <input type="text" placeholder="请输入弹幕内容" class="damu_input_msg"></input>
+      <div class="damu_wraper">
+        <div class="damu_mask">
+
+        </div>
+        <div class="damu_video"></div>
+
+      </div>
+    </div>
+
+    <script type="text/javascript" src=''></script>
+    <script type="text/javascript">
+    (function(){
+      $(document).ready(function(){
+        // jquery 设置动画
+        //
+        // 接受socket返回消息， 显示弹幕， 从左向右移动，或从右向左移动， 溢出直播室后消失
+        // 消息车队列， 每当有新消息时从队列中拉出一个消息车， 运载消息进入弹幕
+        //  1.一行最多四辆车
+        //  2.一共5行
+
+        //  $(selector).animate(styles,speed,easing,callback)
+        window.msgPool=[]
+
+        window.msgBus = []
+        var i=0
+        while(i<20){
+          el = document.createElement('div')
+          el.className = 'damu_msg'
+          el.id = 'msg_'+i
+          msgBus.push(el)
+          i++
+        }
+
+        var msgId = 0
+        $('.damu_input_msg')[0].addEventListener('keydown', function(event){
+          // window.arg = arguments
+          // console.log('asdf', el.target.value)
+
+          if(event.keyCode == 13){// enter
+            msgPool.push(event.target.value)
+            event.target.value=''
+          }
+        })
+
+        setInterval(function(){
+          if(msgPool.length>0){
+            showDamu(msgPool.shift())
+          }
+        },1000)
+
+        var maskWidth = $('.damu_mask')[0].getBoundingClientRect().width
+
+
+        function getBus(){
+          var height = 0
+          if(msgBus.length==0) return;
+
+          var el = msgBus.pop()
+          el.innerText = msg
+          var width = el.getBoundingClientRect().width
+          el.style['min-width'] = width + 'px'
+          el.style.left = -width + 'px'
+          // 控制在跑消息车数量， 通过这个来计算top值
+          el.style.top = (5-msgBus.length/4)*0.2+'rem'
+        }
+
+        function showDamu(msg){
+          getBus(msg)
+          $('.damu_mask')[0].appendChild(el)
+          $(el).animate({left:maskWidth+'px'}, 3000, function(){
+            msgBus.push(el)
+          });
+        }
+      })
+    }).call(this)
+    </script>
+    <style type="text/css">
+      .damu_msg{
+        position: absolute;
+        display: block;
+        height: .1rem;
+      }
+      .damu_input_msg{
+        width: 2rem;
+        height: .2rem;
+        font-size: .1rem;
+        border-radius: .05rem;
+      }
+      .damu_wraper{
+        height: 2rem;
+        margin: .1rem auto;
+        position: relative;
+      }
+      .damu_mask, .damu_video{
+        height: 100%;
+        width: 100%;
+      }
+      .damu_video{
+        background: black;
+      }
+      .damu_mask{
+        position: absolute;
+        color: white;
+        overflow: hidden;
+      }
+    </style>
+  </div>
+
   <div class="content">
     <h1>自适应</h1>
     <script type="text/javascript">
@@ -212,7 +324,7 @@
 
   <div class="content" id='elemRectAndScroll_3'>
     <h1>查询元素的几何尺寸 getBoundingClientRect</h1>
-    <p>这里显示上面标题的尺寸： <span class="red"></span></p>
+    <p>这里显示上面标题的·： <span class="red"></span></p>
     <hr>
     <h1>滚动 window属性 scrollBy scroll scroolTo</h1>
     <div id="scroll_div" class="content">
@@ -277,7 +389,8 @@
     <h1>html插入内容 insertAdajcentHTML </h1>
     <p>first p tag</p>
     <script type="text/javascript">
-      (function(document){
+      (function(){
+        console.log('html插入内容')
         _document = utils.getPartDocument('insertHTML_1')
         // 1. ========= insertAdjacentHTML ==========
         // 将任意的HTML标记字符串插入到指定的元素的相邻位置，
@@ -302,7 +415,9 @@
           _document.insertBefore(newP, _document.firstChild)
           // _document.appendChild(newP)
         }
-      },this)
+
+      }).call(this)
+
     </script>
   </div>
 </body>

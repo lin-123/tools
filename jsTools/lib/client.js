@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 
     //  1337
-    var socket1 = io.connect('http://localhost:1337/socket.io')
+    var socket1 = io.connect('http://localhost:1337')
     console.log(socket1)
     socket1.on('disconnect', function(){
       console.log('disconnect')

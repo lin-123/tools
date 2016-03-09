@@ -11,6 +11,7 @@ app.get('/getString', function(req, res){
 app.listen(3001)
 
 
+//
 // var server = require('http').createServer();
 // var io = require('socket.io')(server);
 
