@@ -16,11 +16,8 @@
       <p>这是一个video， 上面会出现一些弹幕</p>
       <input type="text" placeholder="请输入弹幕内容" class="damu_input_msg"></input>
       <div class="damu_wraper">
-        <div class="damu_mask">
-
-        </div>
+        <div class="damu_mask"></div>
         <div class="damu_video"></div>
-
       </div>
     </div>
 
@@ -37,23 +34,24 @@
 
         //  $(selector).animate(styles,speed,easing,callback)
         window.msgPool=[]
-
         window.msgBus = []
+        var maskWidth = $('.damu_mask')[0].getBoundingClientRect().width
+        var maskHeight = $('.damu_mask')[0].getBoundingClientRect().height
+
         var i=0
         while(i<20){
-          el = document.createElement('div')
+          var el = document.createElement('div')
           el.className = 'damu_msg'
           el.id = 'msg_'+i
           msgBus.push(el)
           i++
         }
 
-        var msgId = 0
         $('.damu_input_msg')[0].addEventListener('keydown', function(event){
-          // window.arg = arguments
-          // console.log('asdf', el.target.value)
-
+          window.ee = event
           if(event.keyCode == 13){// enter
+            msgPool.push(event.target.value)
+            msgPool.push(event.target.value)
             msgPool.push(event.target.value)
             event.target.value=''
           }
@@ -61,32 +59,55 @@
 
         setInterval(function(){
           if(msgPool.length>0){
+            console.log('msgPool...', msgPool[0])
             showDamu(msgPool.shift())
           }
-        },1000)
+        },100)
 
-        var maskWidth = $('.damu_mask')[0].getBoundingClientRect().width
+        function showDamu(msg){
+          var el = getBus(msg)
+          if(!el) return msgPool.unshift(msg);
+          $('.damu_mask')[0].appendChild(el)
+          $(el).animate({left:maskWidth+'px'}, 2000, function(){
+            console.log('el===', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
+            ways[el.id.split('_')[1]] = -1
+            el.id=''
+            msgBus.push(el)
+
+            console.log('el==after=', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
+          });
+        }
 
 
-        function getBus(){
-          var height = 0
+        function getBus(msg){
           if(msgBus.length==0) return;
 
           var el = msgBus.pop()
           el.innerText = msg
           var width = el.getBoundingClientRect().width
-          el.style['min-width'] = width + 'px'
-          el.style.left = -width + 'px'
           // 控制在跑消息车数量， 通过这个来计算top值
-          el.style.top = (5-msgBus.length/4)*0.2+'rem'
+          el.style['min-width'] =  width + 'px'
+          el.style.left = -width + 'px'
+
+          var top = getWay(width)
+          el.id = 'msg_'+top
+          if(top<0){
+            msgBus.push(el);
+            return;
+          }
+          el.style.top = top*maskHeight/20+'px'
+          return el
         }
 
-        function showDamu(msg){
-          getBus(msg)
-          $('.damu_mask')[0].appendChild(el)
-          $(el).animate({left:maskWidth+'px'}, 3000, function(){
-            msgBus.push(el)
-          });
+        // 查询哪条路不堵车
+        window.ways = []
+        function getWay(width){
+          var result = -1
+          for(var i=0; i<ways.length; i++){
+            if((ways[i]<0)&&(ways[i]=1)&&(result=i) ) break;
+          }
+          (result<0)&&(ways.length<10)&&(ways.push(1))&&(result = ways.length-1);
+          return result
         }
       })
     }).call(this)
