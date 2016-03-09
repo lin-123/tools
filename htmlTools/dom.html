@@ -38,15 +38,6 @@
         var maskWidth = $('.damu_mask')[0].getBoundingClientRect().width
         var maskHeight = $('.damu_mask')[0].getBoundingClientRect().height
 
-        var i=0
-        while(i<20){
-          var el = document.createElement('div')
-          el.className = 'damu_msg'
-          el.id = 'msg_'+i
-          msgBus.push(el)
-          i++
-        }
-
         $('.damu_input_msg')[0].addEventListener('keydown', function(event){
           window.ee = event
           if(event.keyCode == 13){// enter
@@ -62,25 +53,37 @@
             console.log('msgPool...', msgPool[0])
             showDamu(msgPool.shift())
           }
-        },100)
+        },200)
 
+        var delay = 3000
         function showDamu(msg){
           var el = getBus(msg)
           if(!el) return msgPool.unshift(msg);
+
           $('.damu_mask')[0].appendChild(el)
-          $(el).animate({left:maskWidth+'px'}, 2000, function(){
-            console.log('el===', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
+          setTimeout(function(){
             ways[el.id.split('_')[1]] = -1
+          }, delay*el.getBoundingClientRect().width/maskWidth + 300)
+
+          $(el).animate({left:maskWidth+'px'}, delay, function(){
+            // console.log('el===', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
+            // ways[el.id.split('_')[1]] = -1
             el.id=''
             msgBus.push(el)
-
-            console.log('el==after=', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
+            // console.log('el==after=', el.id, 'msgbus.length',msgBus.length, el.id.split('_')[1], ways)
           });
         }
 
-
+        // 消息车队， 保持15辆常用车
+        var busLimit = 25, currentBus=0
         function getBus(msg){
-          if(msgBus.length==0) return;
+          if(msgBus.length==0&&currentBus<15){
+            var new_el = document.createElement('div')
+            new_el.className = 'damu_msg';
+            currentBus++;
+            msgBus.push(new_el);
+          }
+          if(msgBus.length==0&&currentBus>=15) return;
 
           var el = msgBus.pop()
           el.innerText = msg
