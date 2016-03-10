@@ -1,45 +1,123 @@
 $(document).ready(function(){
-  if(io){
-    // var port = 3000 //1337
-    // var socket = io.connect('http://localhost:'+port+'/channel_1')
-    // console.log(socket)
-
-
-    //  1337
-    var socket1 = io.connect('http://localhost:1337')
-    console.log(socket1)
-    socket1.on('disconnect', function(){
-      console.log('disconnect')
-    })
-
-    socket1.on('connect', function(){
-      console.log('connect', arguments)
-
-    })
-    socket1.on('message', function(data){
-      console.log('receive message: ', arguments)
-    })
-
-    socket1.on('text', function(data){
-      console.log('receive text: ', arguments)
-      socket1.emit('text', 'adsf')
-    })
-
-  }
-})
-
-    // socket.on('sendMessageToRoom', function(data){
-    //   console.log('receive data: ', data)
-    // })
-    // socket.on('joinOrLeave', function(){
-    //   console.log('joinOrLeave, ', arguments)
-    // })
-
-$(document).ready(function(){
+  initSize()
+  danmu()
   $("uploadFile_4 input").change(function(){
     files = this.files;
   });
 });
+
+var danmu = function(){
+    // jquery 设置动画
+    //
+    // 接受socket返回消息， 显示弹幕， 从左向右移动，或从右向左移动， 溢出直播室后消失
+    // 消息车队列， 每当有新消息时从队列中拉出一个消息车， 运载消息进入弹幕
+    //  1.一行最多四辆车
+    //  2.一共5行
+
+    //  $(selector).animate(styles,speed,easing,callback)
+    window.msgPool=[]
+    window.msgBus = []
+    window.ways = []
+
+    var maskWidth = $('.damu_mask')[0].getBoundingClientRect().width
+    var maskHeight = $('.damu_mask')[0].getBoundingClientRect().height
+    var delay = 3000 //弹幕显示时间
+    var busLimit = 25, currentBus=0
+    var getMsgClork = 200 //pop消息时间间隔
+
+    // socket 获取消息
+    io.sails.host = 'localhost'
+    io.sails.url = 'http://localhost:1337'
+    console.log(io.socket)
+    io.socket.on('connect', function(){
+      console.log('connected ...')
+
+      io.socket.post("http://localhost:1337/message/joinInRoom",{
+        userName:'userName', roomName:'roomName'
+      }, function(msg2){
+        console.log("joinRoomBtn click callback")
+        console.log(msg2)
+      })
+
+      io.socket.post("http://localhost:1337/join",{ roomName:'roomName'}, function(msg2){
+        console.log("joinRoomBtn click callback")
+        console.log(msg2)
+      })
+    })
+    io.socket.on('message', function(data){
+      // console.log(data, 'message')
+      msgPool.push(data)
+    })
+
+    // get msg pool
+    var shiftMsgSchedule = setInterval(function(){
+      if(msgPool.length>0){
+        showDamu(msgPool.shift())
+      }else{
+        ways=[]
+        msgBus.splice(0, 25)
+      }
+    },getMsgClork)
+
+    function showDamu(msg){
+      var el = getBus()
+      if(!el) return msgPool.unshift(msg);
+      makeupEl(el, msg)
+      $('.damu_mask')[0].appendChild(el)
+      var thisDelay = setTimeout(function(){
+        // console.log(el.id.split('_')[1], el.id, '======')
+        ways[el.id.split('_')[1]] = -1
+        clearTimeout(thisDelay)
+      }, delay*el.getBoundingClientRect().width/maskWidth + 300)
+
+      $(el).animate({left:maskWidth+'px'}, delay, function(){
+        el.id=''
+        msgBus.push(el)
+      });
+    }
+
+    // 消息车队， 保持15辆常用车
+    function getBus(msg){
+      if(msgBus.length==0&&currentBus<busLimit){
+        var new_el = document.createElement('div')
+        new_el.className = 'damu_msg';
+        currentBus++;
+        msgBus.push(new_el);
+      }
+      if(msgBus.length==0&&currentBus>=busLimit) return;
+      return msgBus.pop()
+    }
+
+    // 给标签添加样式
+    function makeupEl(el, msg){
+      el.innerText = msg.value
+      var width = el.getBoundingClientRect().width
+
+      el.style['min-width'] =  width + 'px'
+      el.style.left = -width + 'px'
+      el.style.color = msg.color || 'white'
+
+      var top = getWay(width)
+      el.id = 'msg_'+top
+      if(top<0){
+        msgBus.push(el);
+        return;
+      }
+      el.style.top = top*maskHeight/15+'px'
+      return el
+    }
+
+    // 查询哪条路不堵车
+    function getWay(width){
+      var result = -1, waysLength = ways.length;
+      for(var i=0; i<waysLength; i++){
+        if((ways[i]<0)&&(ways[i]=1)&&(result=i) ) break;
+      }
+      (result<0)&&(waysLength<10)&&(ways.push(1))&&(result = waysLength);
+      return result
+    }
+  }
+
 uploadFile = function (){
   // var files = [];
   // $('#uploadFile_4 input')[0].addEventListener('change', function(){
@@ -100,4 +178,24 @@ var domReady = function(){
     console.log('document ready: ', arguments)
     document.querySelectorAll('p')[1].insertAdjacentHTML('beforeEnd', '<br/><h3>document ready</h3>')
   }
+}
+
+
+initSize = function(){
+  // 根据窗口的宽度设置fontSize的单位值
+  // 针对嵌套的窗口或手机上横屏状态 重置fontSize的单位值
+  document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+  addEventListener('load', function() {
+    setTimeout(function(){
+        document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+    }, 480);
+    // 判断窗口是否在一个框架中
+    var isInApp = (window.self != window.top);
+    if (!isInApp) {
+        window.parent.postMessage({name: 'web:inject', token: Math.random().toString(), usertype: 1}, '*');
+    }
+  })
+  addEventListener('orientationchange', function() {
+      document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px'
+  });
 }

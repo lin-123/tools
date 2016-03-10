@@ -19,6 +19,7 @@
     "thenjs": "~2.0.2"
   },
   "devDependencies": {
-    "jquery": "~2.2.0"
+    "jquery": "~2.2.0",
+    "sails.io.js": "~0.13.5"
   }
 }
