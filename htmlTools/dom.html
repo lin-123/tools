@@ -11,6 +11,32 @@
 </head>
 <body>
   <div class="content">
+    <div id="sms">
+      <input class='tel-number'></input>
+      <input class="verify-code"></input>
+      <code class="get-code"></code>
+      <button class="submit"></button>
+    </div>
+    <script>
+      regFn({id:'sms',notNeedName:true,needLightBox:false})
+    </script>
+  </div>
+
+  <div class="content">
+    <h1>发短信， 打电话</h1>
+    <p>跳到手机中发短信， 打电话界面</p>
+    <div class="content">
+      <p>
+        <a href="sms:18655352869">发短信</a>
+      </p>
+
+      <p>
+        <a href="tel:18655352869">打电话</a>
+      </p>
+    </div>
+
+  </div>
+  <div class="content">
     <h1>弹幕</h1>
     <div class="content">
       <p>这是一个video， 上面会出现一些弹幕</p>
