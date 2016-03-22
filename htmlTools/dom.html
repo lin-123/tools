@@ -10,6 +10,27 @@
   <script type="text/javascript" src='./common.js'></script>
 </head>
 <body>
+  <div class="content" id='inner-text-change-102'>
+    <h1>检测dom元素内容的变化</h1>
+    <div class="content">
+      <p class="text">this is change text</p>
+      <label style="border: solid; border-radius: .1rem; width: 1rem; height: 1rem; padding:0 .5rem;"></label>
+    </div>
+    <script type="text/javascript">
+    var clork = 60;
+    setInterval(function(){
+      (clork>0)&&($('#inner-text-change-102 label')[0].innerHTML = --clork)||(clork = 60)
+    }, 100)
+
+    $($('#inner-text-change-102 label')[0]).bind('DOMSubtreeModified', function(e){
+      (parseInt(e.currentTarget.innerText)>=30)
+      &&(e.currentTarget.style.backgroundColor="#ddd")
+      ||(e.currentTarget.style.backgroundColor="RGB(244, 231, 80)");
+    })
+
+    </script>
+  </div>
+
   <div class="content" id='font-family-101'>
     <h1>font-family</h1>
     <p>font-family 可以把多个字体名称作为一个“回退”系统来保存。如果浏览器不支持第一个字体，则会尝试下一个。也就是说，font-family 属性的值是用于某个元素的字体族名称或/及类族名称的一个优先表。浏览器会使用它可识别的第一个值。
