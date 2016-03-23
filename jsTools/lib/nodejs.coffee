@@ -1,4 +1,4 @@
-module.exports = $ =
+module.exports =
   # nodejs 异步控制工具， thenjs, async
   thenjsOpt: ->
     Thenjs = require 'thenjs'
