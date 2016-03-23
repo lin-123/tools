@@ -1,6 +1,6 @@
 $(document).ready(function(){
   initSize()
-  // danmu()
+  danmu()
   mockEvent()
   $("uploadFile_4 input").change(function(){
     files = this.files;
@@ -59,10 +59,21 @@ var danmu = function(){
   var busLimit = 25, currentBus=0
   var getMsgClork = 200 //pop消息时间间隔
 
+  // ===sails socket io==========================// =============================// =============================
   //sails socket 获取消息
   io.sails.host = 'localhost'
   io.sails.url = 'http://localhost:1337'
-  console.log(io.socket)
+
+  // io.socket.on('eventsName', function(){})
+  //    eventName = error, reconnect, reconnect_attempt, reconnect_failed, reconnect_error, reconnecting, reconnect_failed, connect
+  io.socket.on('error', function(){
+    console.log('error')
+  })
+  var reconnect_attempt_count = 0
+  io.socket.on('reconnect_error', function(){
+    console.log('reconnect_error')
+  })
+
   io.socket.on('connect', function(){
     console.log('connected ...')
 
@@ -79,9 +90,19 @@ var danmu = function(){
     })
   })
   io.socket.on('message', function(data){
-    // console.log(data, 'message')
+    console.log(data, 'message')
     msgPool.push(data)
   })
+  // =====手动输入弹幕========================// =============================// =============================
+  $('.damu_input_msg')[0].addEventListener('keydown', function(event){
+    if(event.keyCode == 13){// enter
+      msgPool.push({value: event.target.value, color: 'white'})
+      msgPool.push({value: event.target.value, color: 'red'})
+      msgPool.push({value: event.target.value, color: 'green'})
+      event.target.value=''
+    }
+  })
+  // =====手动输入弹幕========================// =============================// =============================
 
   // get msg pool
   var shiftMsgSchedule = setInterval(function(){
@@ -232,4 +253,15 @@ initSize = function(){
   addEventListener('orientationchange', function() {
       document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px'
   });
+}
+
+// 返回每个代码块的局部 document对象， 就是包裹此代码快的 div元素
+window.utils = {
+  getPartDocument: function(id){
+    return document.getElementById(id)
+  },
+  appendElement: function(targetId, position, message){
+    var str = "<p class='log'>"+message+"</p>"
+    document.getElementById(targetId).insertAdjacentHTML('afterEnd', str)
+  }
 }
