@@ -41,3 +41,14 @@ module.exports = (grunt)->
 
 
   grunt.registerTask('default', ['coffee', 'jade'])
+
+
+#package.json
+  # "devDependencies": {
+  #   "grunt": "~0.4.5",
+  #   "grunt-contrib-coffee": "^1.0.0",
+  #   "grunt-contrib-jade": "^1.0.0",
+  #   "grunt-contrib-jshint": "~0.10.0",
+  #   "grunt-contrib-nodeunit": "~0.4.1",
+  #   "grunt-contrib-uglify": "^0.5.1"
+  # }

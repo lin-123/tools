@@ -7,6 +7,32 @@ $(document).ready(function(){
   });
 });
 
+
+var uploadFile = function (){
+  // var files = [];
+  // $('#uploadFile_4 input')[0].addEventListener('change', function(){
+  // var file = this.files[0]
+  // if(!file) return console.log('没有文件')
+
+  $("#upload-btn").click(function(){
+    var fd = new FormData();
+    for (var i = 0; i < files.length; i++) {
+      fd.append("file", files[i]);
+    }
+    $.ajax({
+      url: "/upload/",
+      method: "POST",
+      data: fd,
+      contentType: false,
+      processData: false,
+      cache: false,
+      success: function(data){
+        console.log(data);
+      }
+    });
+  });
+}
+
 var mockEvent = function(){
   var MockEvent = function(){
     this.events = {}
@@ -29,13 +55,10 @@ var mockEvent = function(){
     delete(this.events[eventName])
   }
 
-
   var event = new MockEvent()
   event.addEventListener('newOne', function(){
     console.log('newOne', arguments)
   })
-
-
   return MockEvent
 }
 
@@ -171,31 +194,6 @@ var danmu = function(){
     (result<0)&&(waysLength<10)&&(ways.push(1))&&(result = waysLength);
     return result
   }
-}
-
-var uploadFile = function (){
-  // var files = [];
-  // $('#uploadFile_4 input')[0].addEventListener('change', function(){
-  // var file = this.files[0]
-  // if(!file) return console.log('没有文件')
-
-  $("#upload-btn").click(function(){
-    var fd = new FormData();
-    for (var i = 0; i < files.length; i++) {
-      fd.append("file", files[i]);
-    }
-    $.ajax({
-      url: "/upload/",
-      method: "POST",
-      data: fd,
-      contentType: false,
-      processData: false,
-      cache: false,
-      success: function(data){
-        console.log(data);
-      }
-    });
-  });
 }
 
 var ajaxHttpRequest = function(){
