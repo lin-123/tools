@@ -3,14 +3,18 @@
 <head>
   <meta charset="utf-8">
   <title>client javascript</title>
-  <link rel="stylesheet" type="text/css" href="./common.css">
-  <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="../bower_components/thenjs/then.js"></script>
+  <link rel="stylesheet" type="text/css" href="./css/common.css">
+  <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
 
-  <script type="text/javascript" src="../bower_components/sails.io.js/dist/sails.io.js"></script>
-  <script type="text/javascript" src="../js/client.js"></script>
+  <!-- <script type="text/javascript" src="./bower_components/sails.io.js/dist/sails.io.js"></script> -->
+  <script type="text/javascript" src="./js/client.js"></script>
 </head>
 <body>
+  <div class="content" id='uploadFile_4'>
+    <h1>上传文件</h1>
+    <input type='file'></input>
+    <button onclick='uploadFile'>上传</button>
+  </div>
 
   <h1>client javascript</h1>
   <div class="content">
@@ -55,13 +59,6 @@
     </style>
   </div>
 
-
-  <div class="content" id='uploadFile_4'>
-    <h1>上传文件</h1>
-    <input type='file'></input>
-    <button onclick='uploadFile'>上传</button>
-  </div>
-
   <div class="content">
     <h1>http request</h1>
     <div id="response_data">===response_data===</div>
@@ -70,11 +67,45 @@
       http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html
     -->
     <!-- 通过script中src实现跨域， 将返回的结果作为回调函数返回[回调函数：callbackFunc]  -->
+
+    <!-- src中填要请求的url?callbackFunc eg: localhost:1337/user?callbackFunc -->
+    <script type="text/javascript" src=''></script>
     <script type="text/javascript">
       function callbackFunc(){console.log('this is callback function')}
     </script>
-    <!-- src中填要请求的url?callbackFunc eg: localhost:1337/user?callbackFunc -->
-    <script type="text/javascript" src=''></script>
+
+    <script type="text/javascript">
+      // juqery 跨域分析
+      var ajaxHttpRequest = function(){
+        // http request
+        // jsonp 原理
+        // http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html
+        // jquery api:  http://api.jquery.com/
+        // =====可跨域=====
+        $.ajax({
+          url: "http://localhost:1337/user",
+          type: 'get',
+          dataType: 'jsonp',
+          cache: true,  //去掉 _=1234 的时间戳字段
+          success: function(){
+            console.log('get user success, ', arguments)
+            document.querySelector('#response_data').contentText = JSON.stringify(arguments)
+          }
+        })
+
+        // jQuery.get( url [, data ] [, success ] [, dataType ] )
+        $.get("http://localhost:1337/user", function(result){
+          console.log(result)
+        }, 'jsonp')
+
+        // ==不可跨域-----
+        // jQuery.getJSON( url [, data ] [, success ] )
+        $.getJSON("http://localhost:1337/user", function(result){
+          console.log(result)
+        })
+      }
+    </script>
+
   </div>
 
   <div class="content" id='inner-text-change-102'>
@@ -519,5 +550,25 @@
     </p>
   </div>
 
+  <script type="text/javascript">
+  initSize = function(){
+    // 根据窗口的宽度设置fontSize的单位值
+    // 针对嵌套的窗口或手机上横屏状态 重置fontSize的单位值
+    document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+    addEventListener('load', function() {
+      setTimeout(function(){
+          document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
+      }, 480);
+      // 判断窗口是否在一个框架中
+      var isInApp = (window.self != window.top);
+      if (!isInApp) {
+          window.parent.postMessage({name: 'web:inject', token: Math.random().toString(), usertype: 1}, '*');
+      }
+    })
+    addEventListener('orientationchange', function() {
+        document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px'
+    });
+  }
+  </script>
 </body>
 </html>

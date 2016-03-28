@@ -1,6 +1,6 @@
 $(document).ready(function(){
   initSize()
-  danmu()
+  // danmu()
   mockEvent()
   $("uploadFile_4 input").change(function(){
     files = this.files;
@@ -33,33 +33,94 @@ var uploadFile = function (){
   });
 }
 
-var mockEvent = function(){
-  var MockEvent = function(){
-    this.events = {}
-  }
+var jsClass = function(){
+  // 1. 使用类的一个重要原因是代码的模块化， 可以在不同的场景中实现复用。 但是类不是唯一的模块化方式
+  // 2. 为了不污染全局空间， 通常设置一个对象作为全局命名空间，
+  //    如， app={}, 然后将其他子模块放到app下， 如： app.utils app.views app.strings 等
 
-  MockEvent.prototype.addEventListener = function(eventName, func){
-    if(this.events[eventName]){
-      this.events[eventName] = func
+  // 类和对象的区别：
+  // - js中的类就是对象，
+  // - 但是用{}方式定义的类没有 通常意义下的对象的 构造函数属性
+
+  // 定义类的三个步骤
+  // 1.  定义构造函数
+  function Person(name, age, privateVal){
+    this.name = name;
+    this.age = age;
+
+    // 构造私有属性， 可写不可读
+    this.privateVal = function(){
+      return privateVal
     }
   }
-
-  MockEvent.prototype.fireEvent = function(eventName) {
-    if(!this.events[eventName]) return;
-    var args = [].slice.call(arguments)
-    this.events[eventName].apply({},args)
+  // 2. 定义实例方法在构造函数的propotype 属性上
+  Person.prototype = {
+    toString: function(){
+      this.hasOwnProperty('sayHi')
+      console.log('my name is', this.name, ', age', this.age, ', privateVal', this.privateVal())
+    }
   }
-
-  MockEvent.prototype.removeEventListener = function(eventName){
-    if(!this.events[eventName]) return;
-    delete(this.events[eventName])
+  // 3. 给构造函数定义类字段或类属性
+  Person.sayHi = function(){
+    conosle.log('hi')
   }
+  var person = new Person('kakaka', 24, 'privateVal')
+  console.log(person.name, person.age, person.privateVal(), 'before')
+  person.privateVal = function(){return ;} //重置privateVal, 通过此实现priveteVal 不可读, 这种实现不好
+  console.log(person.name, person.age, person.privateVal(), 'after')
 
-  var event = new MockEvent()
+  person.toString()
+
+  // 原型对象是类的唯一标识，当且仅当两个类继承自同一个原型对象时， 他们才属于同一个类的实例
+  var person1 = new Person('person1', 1, 'one')
+  var person2 = new Person('person2', 2, 'two')
+
+  // 原型对象是类的唯一标识，当且仅当两个类继承自同一个原型对象时， 他们才属于同一个类的实例
+  //  true true ,check instanceof person and person1
+  console.log(person1 instanceof Person, person1.prototype == person.prototype, ',check instanceof person and person1')
+}
+
+
+var mockEvent = function(){
+  // js类的实现
+  var MockEvent = (function(){
+    // 定义类的三个步骤
+    // 1.  定义构造函数
+    function MockEvent(env){
+      this.events = {}
+      showLog(env || 'production')
+    }
+    // 是否显示console.log
+    function showLog(env){
+      (env == 'production')&&(console.log = function(){})
+    }
+
+    // 2. 定义实例方法在构造函数的propotype 属性上
+    MockEvent.prototype.addEventListener = function(eventName, func){
+      console.log('addEventListener', eventName, func);
+      (this.events[eventName])||(this.events[eventName] = func)
+    }
+    MockEvent.prototype.fireEvent = function(eventName) {
+      console.log(arguments, this.events)
+      if(!this.events[eventName]) return;
+      var args = [].slice.call(arguments)
+      this.events[eventName].apply({},args)
+    }
+    MockEvent.prototype.removeEventListener = function(eventName){
+      (this.events[eventName])&&(delete(this.events[eventName]))
+    }
+    // 只暴露类， 这里的私有方法外界访问不到
+    return MockEvent
+  }())
+
+  // 3. 给构造函数定义类字段或类属性
+  window.event = new MockEvent('test')
+
   event.addEventListener('newOne', function(){
     console.log('newOne', arguments)
   })
-  return MockEvent
+
+  event.fireEvent('newOne', 'this is new message...')
 }
 
 
@@ -196,61 +257,12 @@ var danmu = function(){
   }
 }
 
-var ajaxHttpRequest = function(){
-  // http request
-  // jsonp 原理
-  // http://www.cnblogs.com/dowinning/archive/2012/04/19/json-jsonp-jquery.html
-  // jquery api:  http://api.jquery.com/
-  // =====可跨域=====
-  $.ajax({
-    url: "http://localhost:1337/user",
-    type: 'get',
-    dataType: 'jsonp',
-    cache: true,  //去掉 _=1234 的时间戳字段
-    success: function(){
-      console.log('get user success, ', arguments)
-      document.querySelector('#response_data').contentText = JSON.stringify(arguments)
-    }
-  })
-  // jQuery.get( url [, data ] [, success ] [, dataType ] )
-
-  $.get("http://localhost:1337/user", function(result){
-    console.log(result)
-  }, 'jsonp')
-
-  // ==不可跨域-----
-  // jQuery.getJSON( url [, data ] [, success ] )
-  $.getJSON("http://localhost:1337/user", function(result){
-    console.log(result)
-  })
-}
-
 // document ready
 var domReady = function(){
   onload = function(){
     console.log('document ready: ', arguments)
     document.querySelectorAll('p')[1].insertAdjacentHTML('beforeEnd', '<br/><h3>document ready</h3>')
   }
-}
-
-
-initSize = function(){
-  // 根据窗口的宽度设置fontSize的单位值
-  // 针对嵌套的窗口或手机上横屏状态 重置fontSize的单位值
-  document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
-  addEventListener('load', function() {
-    setTimeout(function(){
-        document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px';
-    }, 480);
-    // 判断窗口是否在一个框架中
-    var isInApp = (window.self != window.top);
-    if (!isInApp) {
-        window.parent.postMessage({name: 'web:inject', token: Math.random().toString(), usertype: 1}, '*');
-    }
-  })
-  addEventListener('orientationchange', function() {
-      document.documentElement.style.fontSize = 100 * innerWidth / 320 + 'px'
-  });
 }
 
 // 返回每个代码块的局部 document对象， 就是包裹此代码快的 div元素
