@@ -17,6 +17,36 @@
   </div>
 
   <h1>client javascript</h1>
+  <div class="content" id="queryUrl_104">
+    <script type="text/javascript">
+    (function(){
+      // 获取url中query的参数值
+      // 如： localhost:9001?name=kakaka
+      // decodeURIComponent 页面url解码
+      var search = decodeURIComponent(location.search), searchParams = {}
+      search.substr(1).split('&').map(function(item){
+        var tmp=item.split('=');
+        searchParams[tmp[0]] = tmp[1]
+      })
+      utils.queryArgByName = function(name){
+        return searchParams[name]
+      }
+      //utils.queryArgByName(name) = kakaka
+
+      // 正则表达式 实现
+      utils.getQueryArgByName = function(name) {
+        var reg, result;
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]")
+        reg = new RegExp("[\\?&]" + name + "=([^&#]*)")
+        result = reg.exec(location.search)
+        console.log(result, 'getQueryArgByName')
+        return result ? decodeURIComponent(result[1].replace(/\+/g, " ")) : null
+      }
+    }).call(this)
+
+    </script>
+  </div>
+
   <div class="content">
     <h1>弹幕</h1>
     <div class="content">
