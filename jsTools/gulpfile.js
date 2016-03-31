@@ -7,7 +7,7 @@
   reload = browserSync.reload;
 
   config = {
-    targetFolder: 'app',
+    targetFolder: 'new',
     port: 9001
   };
 

@@ -1,0 +1,66 @@
+html,body{
+	margin:0;
+	padding: 0;
+}
+body{
+	background: #eee;
+  font-size: 12px;
+}
+.page{
+  position: absolute;
+  top: .1rem;
+  bottom: .1rem;
+  left: .1rem;
+  right: .1rem;
+  background: #777;
+  color: white;
+  border: solid .1rem green;
+  border-radius: 1rem;
+  font-size: 1rem;
+  box-shadow: 0 0 .5rem black;
+  overflow: hidden;
+  /*transition: 1s;*/
+  /*animation: 1s hide;*/
+  height: 7rem;
+  /*-webkit-animation: 1s rainbow;*/
+}
+.animate{
+  animation: 1s aa forwards;
+  -webkit-animation: 1s aa forwards;
+}
+@-webkit-keyframes rainbow {
+  0% { background: #c00; }
+  50% { background: orange; }
+  100% { background: yellowgreen; }
+}
+
+
+@keyframes rainbow {
+  0% { background: #c00; }
+  50% { background: orange; }
+  100% { background: yellowgreen; }
+}
+
+@keyframes aa{
+  /*from {height: 5rem;};*/
+  /*50% {height: 60%; background: red;};*/
+  to {height: 0rem};
+}
+
+@-webkit-keyframes aa{
+  /*from {height: 5rem;};*/
+  /*50% {height: 60%; background: red;};*/
+  to {height: 0rem};
+}
+
+.first{
+  z-index: 10;
+}
+
+.secend{
+  z-index: 9;
+}
+
+.third{
+  z-index: 8;
+}
