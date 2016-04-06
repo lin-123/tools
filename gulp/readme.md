@@ -6,6 +6,8 @@ javascript 用 coffee, es6
 css 用 .css
 vue 中CSS 和 js 随意
 
+##gulp 的每一个task都需要有return返回值来保证这个异步的task结束
+
 启动 gulp，  url: localhost:9001, 文件打包到 .tmp 不压缩
 build: gulp build 文件打包到 dist 压缩
 
