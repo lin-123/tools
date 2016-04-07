@@ -10,13 +10,131 @@
   <script type="text/javascript" src="./js/client.js"></script>
 </head>
 <body>
-  <div class="content" id='uploadFile_4'>
+  <!-- <div class="content" id='uploadFile_4'>
     <h1>上传文件</h1>
     <input type='file'></input>
     <button onclick='uploadFile'>上传</button>
-  </div>
+  </div> -->
 
   <h1>client javascript</h1>
+
+  <div class="content" id="singleDIV_105">
+    <h1>一个div的艺术</h1>
+    <p class="red">
+      参考资料
+      <a href="http://justjavac.iteye.com/blog/2172332" target="blank">link1_perfect</a>
+      <a href="http://www.w3cplus.com/css3/new-css3-radial-gradient.html" target="blank">link2</a>
+      </p>
+    <hr/>
+    <p>样例:</p>
+    <div class="first"></div>
+
+    <p>用div画图， 用linear-gradient和radial-gradient在background中画图， 通过transparent定位 background image</p>
+    <p>/*-webkit-xxx tab 后会自动补全 -o-xxx, -webkit-xxx, xxx */</p>
+    <p><strong class="red">transparent: 透明的， 显而易见的</strong> 通过这个来控制图像大小和位置</p>
+    <hr>
+    <p>
+      线性渐变:
+      <pre>
+        公式：
+          background: linear-gradient(direction, color-stop1, color-stop2, ...);
+
+          -webkit-linear-gradient
+            (left, transparent .1rem,red,transparent .2rem,
+              transparent .8rem, blue, transparent .9rem)
+        这一段意思是，
+          从左边开始， 在距离左边界
+          .1rem 处画一条红色的宽为.1rem的红线，
+          在.8rem处画一条.1rem的蓝线， good
+      </pre>
+    </p>
+    <div class="line">-webkit-linear-gradient(left, transparent .1rem,red,transparent .2rem,transparent .8rem, blue, transparent .9rem)</div>
+
+    <div class="box second">linear-gradient</div>
+
+    <p>radial-gradient 径向渐变</p>
+    <div class="box three">radial-gradient</div>
+
+    <p>demos</p>
+    <div class="box four"><strong>demo</strong></div>
+
+    <div class="box five"></div>
+
+    <div class="box six"></div>
+
+
+    <div style="clear: both;"></div>
+    <style type="text/css">
+      #singleDIV_105 .line{
+        background-image: -webkit-linear-gradient(left, transparent .1rem,red,transparent .2rem,transparent .8rem, blue, transparent .9rem);
+        border: solid .01rem;
+      }
+      #singleDIV_105 .six:before{
+        content: '三角形';
+      }
+      #singleDIV_105 .six{
+        background:
+          radial-gradient(circle at 0 0, yellow .1rem, red .2rem, transparent .1rem),
+          radial-gradient(circle at top, yellow .1rem, red .2rem, transparent .1rem),
+          radial-gradient(ellipse at bottom, yellow, transparent .15rem, red .2rem, transparent .22rem);
+      }
+      #singleDIV_105 .five{
+        background-image:
+          -webkit-repeating-linear-gradient(45deg, #777, transparent .2rem),
+          -webkit-repeating-linear-gradient(-45deg, #777, transparent .2rem);
+      }
+      #singleDIV_105 .first{
+        display: block;
+        width: 170px;
+        height: 140px;
+        background-image:
+              radial-gradient(circle at 50% 120%, rgba(0,0,0,0.7) 23%, rgba(0,0,0,0) 48%),
+              linear-gradient(30deg, rgba(0,0,0,0.4) 10%, rgba(0,0,0,0) 20%),
+              radial-gradient(circle at 50% 33%, #f8f6f7 32%, rgba(255,255,255,0) 32%),
+              radial-gradient(circle at -13% 55%, #f8f6f7 20%, rgba(255,255,255,0) 20%),
+              radial-gradient(circle at 113% 55%, #f8f6f7 20%, rgba(255,255,255,0) 20%),
+              linear-gradient(to bottom, #ef0015 20%, #b2000c 100%);
+        border-radius: 140px 140px 80px 80px;
+      }
+      #singleDIV_105 .four{
+        background-image:
+          radial-gradient(circle at 50% 40%, white 20%, transparent .4rem),
+          -webkit-linear-gradient(top, yellow, transparent .5rem),
+          -webkit-linear-gradient(65deg, #a92719 .6rem, transparent .5rem),
+          -webkit-linear-gradient(115deg, #a92719 .6rem, transparent .5rem);
+      }
+      /*-webkit-xxx tab 后会自动补全 -o-xxx, -webkit-xxx, xxx */
+      #singleDIV_105 .second{
+        background:
+          -webkit-linear-gradient(bottom left, black, yellow, transparent 1rem),
+          -webkit-linear-gradient(top left, black, yellow, transparent 1rem),
+          -webkit-linear-gradient(left, black, yellow, transparent 1rem);
+        background:
+          -o-linear-gradient(bottom left, black, yellow, transparent 1rem),
+          -o-linear-gradient(top left, black, yellow, transparent 1rem),
+          -o-linear-gradient(left, black, yellow, transparent 1rem);
+        background:
+          linear-gradient(to top right, black, yellow, transparent 1rem),
+          linear-gradient(to bottom right, black, yellow, transparent 1rem),
+          linear-gradient(to right, black, yellow, transparent 1rem);
+      }
+
+      #singleDIV_105 .three{
+        background: -webkit-radial-gradient(black, yellow, green);
+        border-radius: 50px;
+      }
+      #singleDIV_105 .box{
+        width: 1rem;
+        height: 1rem;
+        border: solid ;
+        /*float: left;*/
+        margin: .1rem;
+        color: red;
+        text-align: center;
+      }
+
+    </style>
+  </div>
   <div class="content" id="queryUrl_104">
     <script type="text/javascript">
     (function(){

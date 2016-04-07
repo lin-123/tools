@@ -100,3 +100,16 @@ h1{
   content: 'console.log: ';
   color: green;
 }
+p{
+  font-size: .1rem;
+  line-height: .15rem;
+  margin: .1rem 0;
+}
+
+pre{
+  background: #777;
+  color: #fff;
+  display: block;
+  font-size: .08rem;
+  overflow: scroll;
+}
