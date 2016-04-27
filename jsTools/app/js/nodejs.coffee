@@ -1,3 +1,52 @@
+config =
+  grant_type:'client_credential'
+  appid:'wxbb67130c594cf4ac'
+  secret:'2505ccb1ba2e127436d7c874f23e711f'
+
+  domain: "https://api.weixin.qq.com"
+  getToken: "/cgi-bin/token"
+  expire: 7 #过期时间 微信过期时间是7200， 这里设置每7000s更新一次
+https = require('https')
+fs = require('fs')
+token = null
+getToken = ->
+  console.log 'getToken', token
+  token
+
+setToken = (_token)->
+  console.log 'setToken, _token=', _token, ', token=',token
+  token =_token
+
+refreshToken = (callback)->
+  console.log 'refreshToken,,,'
+  https.get "#{config.domain}#{config.getToken}?grant_type=#{config.grant_type}&appid=#{config.appid}&secret=#{config.secret}"
+    , (res)->
+      res.setEncoding 'utf8'
+      res.on 'data', (d) =>
+        result = JSON.parse d
+        setToken(result.access_token)
+
+  # .on 'error', (e)->
+  #   console.log("错误：" + e.message)
+  #   if callback then callback e.message, null
+
+# 模拟定时更新
+schedlue = setInterval ->
+  refreshToken (err, _token)->
+    if err then console.log err
+    setToken _token
+,config.expire*1000
+
+# 模拟请求token
+setInterval ->
+  token = getToken()
+  unless token then refreshToken()
+  console.log getToken(), 'token'
+,1000
+
+
+
+
 module.exports =
   # nodejs 异步控制工具， thenjs, async
   thenjsOpt: ->
@@ -278,6 +327,6 @@ module.exports =
     ).listen(port)
 
 # process.env.agent
-funcName = process.env.runFunc
-console.log "run #{funcName}"
-unless $[funcName]() then console.log 'wrong input runFunc'
+# funcName = process.env.runFunc
+# console.log "run #{funcName}"
+# unless $[funcName]() then console.log 'wrong input runFunc'
