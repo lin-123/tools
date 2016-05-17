@@ -1,16 +1,8 @@
-<<<<<<< HEAD
-常用工具
-#vue+gulp: web开发自动化工具
-    开发： gulp 
-    打包压缩： gulp build
-
 #nodejs+mocha: node单元测试
 
-
-=======
 nodejs 开发， 初始配置
 
-目录结构： 
+目录结构：
 root
     config 配置文件夹
     lib 项目逻辑文件夹
@@ -21,5 +13,8 @@ root
     index.coffee 入口文件
     Makefile
     pakage.json
-    readme.md 
->>>>>>> asdf
+    readme.md
+
+###node调试工具， iron-node
+  支持在chrome devTools中调试
+  需要使用V2版本， 3.0以上版本会出现app.getPath is not function错误
