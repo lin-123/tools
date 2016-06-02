@@ -10,11 +10,126 @@
   <script type="text/javascript" src="./js/client.js"></script>
 </head>
 <body>
-  <!-- <div class="content" id='uploadFile_4'>
+  <div class='content' id='verticle-align-5'>
+    <h1>处理垂直居中</h1>
+    <p>参考文章： https://www.qianduan.net/css-to-achieve-the-vertical-center-of-the-five-kinds-of-methods/</p>
+    <div class="demo">
+      <span class="demo1">demo1</span>
+    </div>
+
+    <div class="demo">
+      <div class="demo2">
+        <span>demo2</span>
+      </div>
+    </div>
+
+
+    <div class="demo">
+      <span class='demo3'>demo3================================================</span>
+    </div>
+
+
+    <div class="demo4">
+      仅仅是一行文字居中
+    </div>
+
+    <style type="text/css">
+      #verticle-align-5 .demo{
+        height: 1rem;
+        width: .5rem;
+        position: relative;
+        border: 2px solid black;
+      }
+      /*第一种， 用绝对定位实现*/
+      #verticle-align-5 .demo1{
+        height: .1rem;
+        position: absolute;
+        top: 50%;
+        margin-top: -.05rem;
+        color: red;
+      }
+
+      #verticle-align-5 .demo2{
+        height: 1rem;
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      /*由于高度固定，设置他的绝对定位，top bottom为0时，margin 会使其自适应居中*/
+      /*优点： 简单*/
+      /*缺点： 当空间不足时会出现显示问题*/
+      #verticle-align-5 .demo3{
+        height: .1rem;
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+      }
+
+      #verticle-align-5 .demo4{
+        line-height: 1rem;
+        border: 1px solid;
+      }
+
+    </style>
+  </div>
+
+  <div class="content" id='uploadFile_4'>
     <h1>上传文件</h1>
-    <input type='file'></input>
-    <button onclick='uploadFile'>上传</button>
-  </div> -->
+
+    <form action="http://localhost:3000/uploadFile" method='post' enctype="multipart/form-data">
+      <input type="file" name="fileToUpload" id="fileToUpload">
+      <input type="submit">
+    </form>
+
+    <form id        =  "uploadForm"
+         enctype   =  "multipart/form-data"
+         action    =  "http://localhost:3000/uploadFile"
+         method    =  "post"
+    >
+      <input type="file" name="userPhoto" />
+      <input type="submit" value="Upload Image" name="submit">
+    </form>
+  </div>
+
+  <div class="content" id="canvas_107">
+    <h1>canvas 绘制视频</h1>
+    <div class="content">
+      <p>画图片</p>
+      <img src="images/title.png" id='canvas_img'>
+      <canvas id="myCanvas" width="200" height="100" style="border:1px solid #c3c3c3;">
+      Your browser does not support the canvas element.
+      </canvas>
+      <script type="text/javascript">
+        (function(){
+          var c=document.getElementById("myCanvas");
+          var cxt=c.getContext("2d");
+          var img=document.getElementById('canvas_img')
+          setTimeout(function(){
+            cxt.drawImage(img,0,0);
+          }, 1000)
+        }).call(this)
+      </script>
+    </div>
+    <div class="content">
+      <p>draw video</p>
+      <video id="video" src="http://www.w3school.com.cn/example/html5/mov_bbb.mp4" width="600px" height="400px" controls="control" autoplay="true" loop="loop" style="display:none;"></video>
+      <canvas id="liping" width="600" height="400"></canvas>
+
+      <script type="text/javascript">
+        var canvas = document.querySelector('#liping')
+          , video = document.querySelector('#video')
+          , cxt = canvas.getContext('2d')
+          , width = 600
+          , height = 400
+          setInterval(function(){
+            cxt.drawImage(video, 0 , 0, width, height)
+          }, 300)
+      </script>
+    </div>
+  </div>
+
   <div class="content" id="navigate_qq_106">
     <h1>难以置信的a标签</h1>
 
