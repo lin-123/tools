@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dowload app</title>
+	<meta	charset='utf8'/>
+	<style type="text/css">
+	.wraper{
+		position: relative;
+	}
+	.tips2browser{
+		position: absolute;
+		display: none;
+		background-color: rgba(0,0,0,.5);
+	}
+	</style>
+</head>
+<body>
+<div class="wraper">
+	<a class="download" >下载app</a>
+	<div class="tips2browser">
+		到浏览器中下载
+	</div>
+</div>
+<script type="text/javascript">
+(function(){
+	queryNavigator = function(query){
+		return navigator.userAgent.toLowerCase().match(query)
+	}
+
+	var userAgent = {
+		android: queryNavigator(/android/i),
+		ios: queryNavigator(/iphone|ipad|ipod/i),
+		wechat: queryNavigator(/micromessenger/i)
+	}
+
+	getUrl = function(){
+		var android = 'http://www.baidu.com?android'
+			, ios = 'http://www.baidu.com?ios'
+			, defaultUrl = 'http://www.baidu.com'
+
+		if (userAgent.android){
+			return android
+		}
+		if (userAgent.ios){
+			return ios
+		}
+		return defaultUrl
+	}
+
+	document.querySelector('.download').addEventListener('click', function(){
+		if(userAgent.wechat && userAgent.ios){
+		  return document.querySelector('.tips2browser').style.display = 'block'
+		}
+		location.href = getUrl()
+	})
+	// 自适应
+
+}).call(this)
+</script>
+</body>
+</html>
