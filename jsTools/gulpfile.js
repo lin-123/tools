@@ -8,7 +8,7 @@
 
   config = {
     targetFolder: 'app',
-    port: 9001
+    port: 9000
   };
 
   gulp.task("watch", function() {
