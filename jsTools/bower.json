@@ -2,7 +2,7 @@
   "name": "es6demo",
   "description": "",
   "main": "index.js",
-  "directory": "app/bower_components",
+  "directory": "bower_components",
   "authors": [
     "侯林江 <linjiang.hou@baidao.com>"
   ],
