@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <title>client javascript</title>
   <link rel="stylesheet" type="text/css" href="./css/common.css">
-
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable", content="yes">
   <!-- 标题图标文件 -->
   <link rel="shortcut icon" href="./images/favicon.ico" />
 
@@ -14,27 +15,26 @@
   <script type="text/javascript" src="./js/client.js"></script>
 </head>
 <body>
+  <div class="content" id="scroll_5">
+    <p>div滚动条位置测量</p>
 
-<div class="content">
-  <p>div滚动条位置测量</p>
+    <pre>
+    1.clientWidth和clientHeight
+    这组属性可以获取元素可视区的大小，可以得到元素内容及内边距所占据的空间大小。
+    box.clientWidth;//200
+    box.clientHeight;//200
 
-  <pre>
-  1.clientWidth和clientHeight
-  这组属性可以获取元素可视区的大小，可以得到元素内容及内边距所占据的空间大小。
-  box.clientWidth;//200
-  box.clientHeight;//200
+    2.scrollWidth和scrollHeight
+    这组属性可以获取滚动内容的元素大小。
+    box.scrollWidth;//200
+    box.scrollWidth;//200
 
-  2.scrollWidth和scrollHeight
-  这组属性可以获取滚动内容的元素大小。
-  box.scrollWidth;//200
-  box.scrollWidth;//200
-
-  3.scrollTop和scrollLeft
-  这组属性可以获取滚动条被隐藏的区域大小，也可设置定位到该区域。
-  box.scrollTop;//获取滚动内容上方的位置
-  box.scrollLeft;//获取滚动内容左方的位置
-  </pre>
-</div>
+    3.scrollTop和scrollLeft
+    这组属性可以获取滚动条被隐藏的区域大小，也可设置定位到该区域。
+    box.scrollTop;//获取滚动内容上方的位置
+    box.scrollLeft;//获取滚动内容左方的位置
+    </pre>
+  </div>
 
   <div class="content" id='uploadFile_4'>
     <h1>上传文件</h1>

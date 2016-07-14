@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>弹幕</title>
+    <script type="text/javascript" src="./assets/jquery.min.js"></script>
+    <script type="text/javascript" src="./assets/sails.io.js"></script>
+    <script type="text/javascript" src="./js/socket.js"></script>
+    <style type="text/css">
+      body{
+        font-size: .16rem;
+      }
+      .damu_msg{
+        position: absolute;
+        display: block;
+        height: .10rem;
+      }
+      .damu_input_msg{
+        width: 2.00rem;
+        height: .20rem;
+        font-size: .20rem;
+        border-radius: .05rem;
+      }
+      .damu_wraper{
+        height: 2rem;
+        margin: .10rem auto;
+        position: relative;
+      }
+      .damu_mask, .damu_video{
+        height: 100%;
+        width: 100%;
+      }
+      .damu_video{
+        background: black;
+      }
+      .damu_mask{
+        position: absolute;
+        color: white;
+        overflow: hidden;
+      }
+    </style>
+    <script>
+      // 自适应处理
+      document.documentElement.style.fontSize = 100 * innerWidth / 750 + 'px';
+      addEventListener('load', function() {
+        setTimeout(function(){
+            document.documentElement.style.fontSize = 100 * innerWidth / 750 + 'px';
+        }, 480);
+        // 判断窗口是否在一个框架中
+        var isInApp = (window.self != window.top);
+        if (!isInApp) {
+            window.parent.postMessage({name: 'web:inject', token: Math.random().toString(), usertype: 1}, '*');
+        }
+      })
+      addEventListener('orientationchange', function() {
+          document.documentElement.style.fontSize = 100 * innerWidth / 750 + 'rem'
+      });
+    </script>
+  </head>
+  <body>
+    <div class="content">
+      <h1>弹幕</h1>
+      <div class="content">
+        <p>这是一个video， 上面会出现一些弹幕</p>
+        <input type="text" placeholder="请输入弹幕内容" class="damu_input_msg"></input>
+        <div class="damu_wraper">
+          <div class="damu_mask"></div>
+          <div class="damu_video"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
