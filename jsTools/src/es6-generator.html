@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>es6 generator usage</title>
+</head>
+<body>
+<h1>es6 generator</h1>
+<script type="text/javascript">
+const gen = function* (){
+  let count = 1
+  // count++
+  setTimeout(()=> { yield count}, 1000);
+  // yield count
+
+  setTimeout(()=> (count+=2, yield count) , 1000)
+  yield count
+
+}
+
+const g = gen()
+
+console.log(new Date())
+console.log(g.next(), new Date())
+console.log(g.next(), new Date())
+
+
+
+</script>
+</body>
+</html>
