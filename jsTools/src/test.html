@@ -2,10 +2,27 @@
 <html>
 <head>
 	<title>asdf</title>
-	<link rel="shortcut icon" href="./images/favicon.ico" />/
+	<link rel="shortcut icon" href="./images/favicon.ico" />
 	<!-- <link rel="shortcut icon" href="http://a.fsdn.com/con/img/sftheme/favicon.ico"> -->
 </head>
 <body>
 asdf
+<script type="text/javascript">
+var a = [1,2,3]
+
+var propHandle = function(val) {
+	console.log(val)
+}
+
+Object.defineProperty(a, 'sync', {
+	set: (value) => {
+		console.log(a, value)
+	}
+})
+
+// Object.defineProperties(a, { push: propHandle, unshift: propHandle })
+
+
+</script>
 </body>
 </html>

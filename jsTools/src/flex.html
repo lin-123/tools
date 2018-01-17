@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>flex</title>
+  <meta charset="utf-8">
+</head>
+<body>
+<h1>flex</h1>
+
+<style type="text/css">
+  .box{
+    display: flex;
+    background: #eee;
+    width: 250px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .row{
+    flex-direction: row;
+  }
+  .unit{
+    background: #aaa;
+    width: 10px;
+    height: 100px;
+    margin: 10px;
+  }
+  .full{
+    flex: auto;
+    height: 100%;
+    width: 100%;
+  }
+</style>
+<div class="box row">
+  <div class="unit" style="height: 200px;">==1=</div>
+  <div class="unit">==2=</div>
+  <div class="">
+    <div class="unit">===</div>
+    <div class="unit full">=full in blank=</div>
+  </div>
+</div>
+
+</body>
+</html>

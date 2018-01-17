@@ -4,39 +4,29 @@
   <title>视频</title>
 </head>
 <body>
-<div>
+<!-- <div>
   <h1>rtmp</h1>
   <video class="tv-video" autoplay="" webkit-playsinline="true" x-webkit-airplay="true"
     controls="" _v-6c0a2951="" width="400" height="300"
     src="rtmp://ytxrtmp.evideocloud.net/live/ytxlive3__rVOYDwznxVE7"></video>
-
-  <!-- <video width="400" height="300" src="rtmp://ytxrtmp.evideocloud.net/live/ytxlive3__rVOYDwznxVE7"></video> -->
-</div>
+</div> -->
 
 <div>
   <h1>m3u8</h1>
+  <video class="tv-video" controls="" width="400" height="300"
+    src="http://wsvideocache2.gensee.com/gsgetrecord/record10.gensee.net/gsrecord/3782/upload/2017_10_24/9994812_1508829057/hls/record.m3u8"></video>
 
-  <video class="tv-video" autoplay="" webkit-playsinline="true" x-webkit-airplay="true"
+  <!-- <video class="tv-video" autoplay="" webkit-playsinline="true" x-webkit-airplay="true"
     controls="" _v-6c0a2951="" width="400" height="300"
-    src="http://ytxhls.evideocloud.net/live/ytxlive3__rVOYDwznxVE7/ytxlive3__rVOYDwznxVE7.m3u8"></video>
+    src="http://wsvideocache2.gensee.com/gsgetrecord/record10.gensee.net/gsrecord/3782/upload/2017_10_24/9994812_1508829057/hls/record.m3u8"></video> -->
 
-  <!-- <video width="400" height="300" src="http://ytxhls.evideocloud.net/live/ytxlive3__rVOYDwznxVE7/ytxlive3__rVOYDwznxVE7.m3u8"></video> -->
 </div>
+<script type="text/javascript">
+  // document.querySelector('video').addEventListener('click', function() {
+  //   console.log('click')
+  // })
 
-<!--
-videoWidth:720
-isLiveIn:true
-createdAt:"2016-10-18T02:47:05.000Z"
-audioUrlHLS:"http://ytxhls.evideocloud.net/live/audio_ytxlive3__aKXgeWLr8Vvd/audio_ytxlive3__aKXgeWLr8Vvd.m3u8"
-audioUrlRTMP:"rtmp://ytxrtmp.evideocloud.net/live/ytxlive3__rVOYDwznxVE7"
-roomId:5
-team:"少林派"
-updatedAt:"2017-01-05T06:13:15.000Z"
-videoHeight:1280
-videoState:1
-videoUrlHLS:"http://ytxhls.evideocloud.net/live/ytxlive3__rVOYDwznxVE7/ytxlive3__rVOYDwznxVE7.m3u8"
-videoUrlRTMP:"rtmp://ytxrtmp.evideocloud.net/live/ytxlive3__rVOYDwznxVE7" -->
-
-
+  document.querySelector('video').addEventListener('play', function() {console.log('play')} )
+</script>
 </body>
 </html>
