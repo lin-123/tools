@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="utf-8">
+  <!-- it's important for d3.js -->
+  <link rel="stylesheet" href="../bower_components/nvd3/build/nv.d3.css">
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/d3/d3.js"></script>
+  <script src="../bower_components/nvd3/build/nv.d3.js"></script>
+  <script src="../bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+  <script src="../bower_components/angular-ui-grid/ui-grid.js"></script>
+  <link rel="stylesheet" href="../bower_components/angular-ui-grid/ui-grid.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <div ng-app="myApp">
+    <div ng-controller="myCtrl">
+      <div id="grid1" ui-grid="gridData" ui-grid-edit-dropdown class="grid"></div>
+      <nvd3 options="options" data="data"></nvd3>
+      <nvd3 options="fourCol.config" data="fourCol.data"></nvd3>
+      <nvd3 options="twoCol.config" data="twoCol.data"></nvd3>
+    </div>
+  </div>
+  <style type="text/css">
+  /*.ui-grid-icon-angle-down{ display: none; }*/
+  </style>
+  <script type="text/javascript" src="./sample.js"></script>
+  <script>
+    angular.module('myApp', ['nvd3', 'ui.grid'])
+      .controller('myCtrl', function ($scope) {
+        var tableData = []
+        for(var i = 0; i < 100; i++){
+          tableData.push({
+            firstName: "Cox" + i ,
+            lastName: "Carney",
+            company: "Enormo",
+            employed: true
+          })
+        }
+
+        $scope.gridData = {
+          enableHiding: false,
+          // data: 'myData',
+          // enableCellEditOnFocus: true,
+          enableColumnResizing: true,
+          // enableFiltering: true,
+          enableGridMenu: false,
+          // showGridFooter: true,
+          // showColumnFooter: true,
+          fastWatch: true,
+          // rowIdentity: getRowId,
+          // getRowIdentity: getRowId,
+          // enableGridMenu: false,
+          // disabe column menus
+          enableColumnMenus: false,
+
+
+          data: tableData
+        }
+
+
+
+
+
+
+        var evalFun = function (obj) {
+          if(!obj) return obj;
+          Object.keys(obj).forEach(key => {
+            const node = obj[key]
+            if (typeof node === 'object') return evalFun(node);
+
+            if (typeof node === 'string' && /^(function\(|d3.)/.test(node)) {
+              // fix string function for(i=0, ...)
+              return eval('let i; obj[key]=' + node)
+            }
+          })
+          return obj;
+        }
+
+
+        $scope.fourCol = evalFun(fourCol)
+        $scope.twoCol = evalFun(twoCol)
+        // console.log(fourCol.data)
+        $scope.options = {
+          chart: {
+            type: 'discreteBarChart',
+            height: 450,
+            margin: {
+              top: 20,
+              right: 20,
+              bottom: 60,
+              left: 55
+            },
+            x: function (d) {
+              return d.label;
+            },
+            y: function (d) {
+              return d.value;
+            },
+            showValues: true,
+            valueFormat: function (d) {
+              return d3.format(',.4f')(d);
+            },
+            transitionDuration: 500,
+            xAxis: {
+              axisLabel: 'X Axis',
+              rotateLabels: 30,
+            },
+            yAxis: {
+              axisLabel: 'Y Axis',
+              axisLabelDistance: 10
+            },
+            groupSpacing: 0.8,
+          }
+        };
+        $scope.data = [{
+          key: "Cumulative Return",
+          values: [{
+              "label": "A",
+              "value": -29.765957771107
+            },
+            {
+              "label": "B",
+              "value": 0
+            },
+            {
+              "label": "C",
+              "value": 32.807804682612
+            },
+            {
+              "label": "D",
+              "value": 196.45946739256
+            },
+            {
+              "label": "E",
+              "value": 0.19434030906893
+            },
+            {
+              "label": "F",
+              "value": -98.079782601442
+            },
+            {
+              "label": "G",
+              "value": -13.925743130903
+            },
+            {
+              "label": "H",
+              "value": -5.1387322875705
+            }
+          ]
+        }]
+      })
+  </script>
+</body>
+
+</html>
